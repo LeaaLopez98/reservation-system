@@ -42,7 +42,7 @@ public class Club {
     private List<Field> fields;
 
     @ManyToOne
-    @JoinColumn(name = "idAdmin")
-    private Admin admin;
+    @JoinColumn(name = "idOwner")
+    private Owner owner;
 
 }

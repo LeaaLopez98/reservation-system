@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @PrimaryKeyJoinColumn(name = "idAdmin")
-public class Admin extends UserAccount{
+public class Owner extends UserAccount{
 
     @OneToMany(mappedBy = "admin")
     private List<Club> clubs;
