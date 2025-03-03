@@ -8,11 +8,14 @@ import app.reservationsystem.persistence.repository.PlayerRepository;
 import app.reservationsystem.presentation.dto.*;
 import app.reservationsystem.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private final PasswordEncoder encoder;
 
     private final PlayerRepository playerRepository;
     private final OwnerRepository ownerRepository;
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
         Player player = Player.builder()
                 .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword())
+                .password(encoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .name(registerRequest.getName())
                 .role(Role.PLAYER)
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         Owner owner = Owner.builder()
                 .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword())
+                .password(encoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .role(Role.OWNER)
                 .build();
