@@ -4,10 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@SuperBuilder
 @PrimaryKeyJoinColumn(name = "idPlayer")
 public class Player extends UserAccount{
 
