@@ -3,6 +3,11 @@ package app.reservationsystem.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public abstract class UserAccount {
+public abstract class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +33,29 @@ public abstract class UserAccount {
 
     @Column(nullable = false)
     private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
