@@ -7,7 +7,7 @@ import app.reservationsystem.persistence.entity.UserAccount;
 import app.reservationsystem.persistence.repository.OwnerRepository;
 import app.reservationsystem.persistence.repository.PlayerRepository;
 import app.reservationsystem.persistence.repository.UserRepository;
-import app.reservationsystem.presentation.dto.*;
+import app.reservationsystem.presentation.dto.auth.*;
 import app.reservationsystem.services.interfaces.JwtService;
 import app.reservationsystem.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;

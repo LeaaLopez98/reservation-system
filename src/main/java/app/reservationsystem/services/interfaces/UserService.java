@@ -1,6 +1,6 @@
 package app.reservationsystem.services.interfaces;
 
-import app.reservationsystem.presentation.dto.*;
+import app.reservationsystem.presentation.dto.auth.*;
 
 public interface UserService {
 
