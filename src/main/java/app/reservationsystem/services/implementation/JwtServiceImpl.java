@@ -2,6 +2,7 @@ package app.reservationsystem.services.implementation;
 
 import app.reservationsystem.persistence.entity.UserAccount;
 import app.reservationsystem.services.interfaces.JwtService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -25,6 +27,7 @@ public class JwtServiceImpl implements JwtService {
         return Jwts
                 .builder()
                 .subject(account.getUsername())
+                .id(account.getIdUser().toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .claim("role", account.getRole())
@@ -35,6 +38,25 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String validateToken(String token) {
         return "";
+    }
+
+    @Override
+    public Long extractIdUser(String token) {
+        return Long.valueOf(extractClaim(token, Claims::getId));
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims getAllClaims(String token) {
+        return Jwts
+                .parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSignInKey() {
