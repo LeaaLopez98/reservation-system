@@ -1,0 +1,10 @@
+services:
+  db:
+    container_name: db-reservation-system
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reservation-system
+    ports:
+      - "5432:5432"
