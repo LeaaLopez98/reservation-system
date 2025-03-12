@@ -15,7 +15,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer idReservation;
+    private Long idReservation;
 
     @ManyToOne
     @JoinColumn(name = "idPlayer")
@@ -25,6 +25,10 @@ public class Reservation {
     @JoinColumn(name = "idField")
     private Field field;
 
-    private LocalDateTime reservationDate;
+    @Column(nullable = false)
+    private LocalDateTime dateBegin;
+
+    @Column(nullable = false)
+    private LocalDateTime dateEnd;
 
 }
