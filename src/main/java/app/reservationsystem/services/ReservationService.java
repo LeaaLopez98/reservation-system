@@ -12,5 +12,6 @@ public interface ReservationService {
 
     List<ReservationResponseDTO> getReservationsByRole();
 
-    void deleteReservation(Long idReservation);
+    void cancelReservation(Long idReservation);
+    void confirmReservation(Long idReservation);
 }

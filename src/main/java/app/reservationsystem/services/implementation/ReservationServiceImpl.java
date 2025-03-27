@@ -1,9 +1,6 @@
 package app.reservationsystem.services.implementation;
 
-import app.reservationsystem.persistence.entity.Field;
-import app.reservationsystem.persistence.entity.Player;
-import app.reservationsystem.persistence.entity.Reservation;
-import app.reservationsystem.persistence.entity.Role;
+import app.reservationsystem.persistence.entity.*;
 import app.reservationsystem.persistence.repository.FieldRepository;
 import app.reservationsystem.persistence.repository.PlayerRepository;
 import app.reservationsystem.persistence.repository.ReservationRepository;
@@ -30,7 +27,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationResponseDTO addReservation(ReservationRequestDTO reservationRequestDTO) {
 
-        boolean exists = reservationRepository.existsByFieldIdFieldAndDateBeginBeforeAndDateEndAfter(
+        boolean exists = reservationRepository.existsByStatusNotLikeAndFieldIdFieldAndDateBeginBeforeAndDateEndAfter(
+                Status.CANCELED,
                 reservationRequestDTO.getIdField(),
                 reservationRequestDTO.getDateEnd(),
                 reservationRequestDTO.getDateBegin()
@@ -94,8 +92,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void deleteReservation(Long idReservation) {
-
+    public void cancelReservation(Long idReservation) {
         Long idUser = ClaimsUtil.getUserId();
 
         Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
@@ -106,6 +103,20 @@ public class ReservationServiceImpl implements ReservationService {
             throw new RuntimeException("You are not the owner of this reservation");
         }
 
-        reservationRepository.delete(reservation);
+        reservation.setStatus(Status.CANCELED);
+
+        reservationRepository.save(reservation);
+    }
+
+    @Override
+    public void confirmReservation(Long idReservation) {
+
+        Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
+                () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
+        );
+
+        reservation.setStatus(Status.CONFIRMED);
+
+        reservationRepository.save(reservation);
     }
 }
