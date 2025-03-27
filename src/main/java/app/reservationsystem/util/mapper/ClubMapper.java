@@ -5,8 +5,9 @@ import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = FieldMapper.class)
 public interface ClubMapper {
+
 
     Club DtoToEntity(ClubRequestDTO clubDTO);
     ClubResponseDTO entityToDto(Club club);
