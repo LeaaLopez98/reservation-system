@@ -41,11 +41,19 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
-    @DeleteMapping("/{id-reservation}")
+    @PatchMapping("/{id-reservation}/cancel")
     public ResponseEntity<Void> deleteReservation(
             @PathVariable(name = "id-reservation") Long idReservation
     ) {
-        reservationService.deleteReservation(idReservation);
+        reservationService.cancelReservation(idReservation);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id-reservation}/confirm")
+    public ResponseEntity<Void> confirmReservation(
+            @PathVariable(name = "id-reservation") Long idReservation
+    ) {
+        reservationService.confirmReservation(idReservation);
         return ResponseEntity.noContent().build();
     }
 
