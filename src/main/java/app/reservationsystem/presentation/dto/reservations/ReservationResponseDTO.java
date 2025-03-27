@@ -1,5 +1,6 @@
 package app.reservationsystem.presentation.dto.reservations;
 
+import app.reservationsystem.persistence.entity.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,5 +19,7 @@ public class ReservationResponseDTO {
     private Integer fieldNumber;
     private LocalDateTime dateBegin;
     private LocalDateTime dateEnd;
+
+    private Status status;
 
 }
