@@ -1,6 +1,7 @@
 package app.reservationsystem.presentation.dto.clubs;
 
 import app.reservationsystem.persistence.entity.Field;
+import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,6 @@ public class ClubResponseDTO {
     private String email;
     private LocalTime openingTime;
     private LocalTime closingTime;
-    private List<Field> fields;
+    private List<FieldResponseDTO> fields;
 
 }
