@@ -1,15 +1,13 @@
-package app.reservationsystem.services.interfaces;
+package app.reservationsystem.services;
 
-import app.reservationsystem.persistence.entity.Role;
 import app.reservationsystem.persistence.entity.UserAccount;
-import org.springframework.security.core.userdetails.UserDetails;
+import io.jsonwebtoken.Claims;
 
 public interface JwtService {
 
     String generateToken(UserAccount account);
-    boolean isValidToken(String token, UserDetails userDetails);
+    boolean isValidToken(String token, String username);
     String extractUsername(String token);
-    Role extractRole(String token);
-    Long extractIdUser(String token);
+    Claims getAllClaims(String token);
 
 }

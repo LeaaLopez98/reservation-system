@@ -1,7 +1,7 @@
 package app.reservationsystem.services.implementation;
 
 import app.reservationsystem.persistence.entity.UserAccount;
-import app.reservationsystem.services.interfaces.JwtService;
+import app.reservationsystem.services.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -36,13 +36,21 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String validateToken(String token) {
-        return "";
+    public boolean isValidToken(String token, String subject) {
+        final String username = extractUsername(token);
+        return (username.equals(subject) && !isTokenExpired(token));
     }
 
-    @Override
-    public Long extractIdUser(String token) {
-        return Long.valueOf(extractClaim(token, Claims::getId));
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -50,7 +58,7 @@ public class JwtServiceImpl implements JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Claims getAllClaims(String token) {
+    public Claims getAllClaims(String token) {
         return Jwts
                 .parser()
                 .verifyWith(getSignInKey())
