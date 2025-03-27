@@ -2,7 +2,7 @@ package app.reservationsystem.presentation.controller;
 
 import app.reservationsystem.presentation.dto.reservations.ReservationRequestDTO;
 import app.reservationsystem.presentation.dto.reservations.ReservationResponseDTO;
-import app.reservationsystem.services.interfaces.ReservationService;
+import app.reservationsystem.services.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +18,9 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<ReservationResponseDTO> createReservation(
-            @RequestBody ReservationRequestDTO reservationRequestDTO,
-            @RequestHeader(name = "Authorization") String token
+            @RequestBody ReservationRequestDTO reservationRequestDTO
     ) {
-        return ResponseEntity.ok(reservationService.addReservation(reservationRequestDTO, token));
+        return ResponseEntity.ok(reservationService.addReservation(reservationRequestDTO));
     }
 
     @GetMapping("/{id-reservation}")
@@ -34,11 +33,8 @@ public class ReservationController {
     // TODO -> ADD FILTER BY QUERY PARAMS FOR idClub, idPlayer and idField
     @GetMapping
     public ResponseEntity<List<ReservationResponseDTO>> getAllReservations(
-            @RequestHeader(name = "Authorization") String token
-
     ) {
-
-        List<ReservationResponseDTO> reservations = reservationService.getAllReservations(token);
+        List<ReservationResponseDTO> reservations = reservationService.getReservationsByRole();
 
         if (reservations.isEmpty()) return ResponseEntity.noContent().build();
 
@@ -47,10 +43,9 @@ public class ReservationController {
 
     @DeleteMapping("/{id-reservation}")
     public ResponseEntity<Void> deleteReservation(
-            @PathVariable(name = "id-reservation") Long idReservation,
-            @RequestHeader(name = "Authorization") String token
+            @PathVariable(name = "id-reservation") Long idReservation
     ) {
-        reservationService.deleteReservation(idReservation, token);
+        reservationService.deleteReservation(idReservation);
         return ResponseEntity.noContent().build();
     }
 

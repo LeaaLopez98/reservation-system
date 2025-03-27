@@ -3,7 +3,7 @@ package app.reservationsystem.presentation.controller;
 import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubUpdateDTO;
-import app.reservationsystem.services.interfaces.ClubService;
+import app.reservationsystem.services.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +19,9 @@ public class ClubController {
 
     @PostMapping
     public ResponseEntity<ClubResponseDTO> addClub(
-            @RequestBody ClubRequestDTO clubRequest,
-            @RequestHeader(name = "Authorization") String token
+            @RequestBody ClubRequestDTO clubRequest
     ) {
-        return ResponseEntity.ok(clubService.addClub(clubRequest, token));
+        return ResponseEntity.ok(clubService.addClub(clubRequest));
     }
 
     @GetMapping("/{id-club}")
@@ -44,9 +43,8 @@ public class ClubController {
 
     @GetMapping("/me")
     public ResponseEntity<List<ClubResponseDTO>> getClubByOwner(
-            @RequestHeader(name = "Authorization") String token
     ) {
-        List<ClubResponseDTO> clubs = clubService.getMyClubs(token);
+        List<ClubResponseDTO> clubs = clubService.getMyClubs();
 
         if (clubs.isEmpty()) return ResponseEntity.noContent().build();
 
@@ -56,18 +54,16 @@ public class ClubController {
     @PutMapping("/{id-club}")
     public ResponseEntity<ClubResponseDTO> updateClub(
             @PathVariable(name = "id-club") Integer idClub,
-            @RequestHeader(name = "Authorization") String token,
             @RequestBody ClubUpdateDTO clubUpdateDTO
     ) {
-        return ResponseEntity.ok(clubService.updateClub(idClub, clubUpdateDTO, token));
+        return ResponseEntity.ok(clubService.updateClub(idClub, clubUpdateDTO));
     }
 
     @DeleteMapping("/{id-club}")
     public ResponseEntity<Void> deleteClub(
-            @PathVariable(name = "id-club") Integer idClub,
-            @RequestHeader(name = "Authorization") String token
+            @PathVariable(name = "id-club") Integer idClub
     ) {
-        clubService.deleteClub(idClub, token);
+        clubService.deleteClub(idClub);
         return ResponseEntity.noContent().build();
     }
 

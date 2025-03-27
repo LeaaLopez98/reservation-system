@@ -1,4 +1,4 @@
-package app.reservationsystem.services.interfaces;
+package app.reservationsystem.services;
 
 import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ClubService {
 
-    ClubResponseDTO addClub(ClubRequestDTO clubRequestDTO, String token);
+    ClubResponseDTO addClub(ClubRequestDTO clubRequestDTO);
     ClubResponseDTO getClubById(Integer idClub);
 
 
     List<ClubResponseDTO> getAllClubs();
-    List<ClubResponseDTO> getMyClubs(String token);
+    List<ClubResponseDTO> getMyClubs();
 
-    ClubResponseDTO updateClub(Integer idClub, ClubUpdateDTO clubUpdateDTO, String token);
-    void deleteClub(Integer idClub, String token);
+    ClubResponseDTO updateClub(Integer idClub, ClubUpdateDTO clubUpdateDTO);
+    void deleteClub(Integer idClub);
 
 
 }

@@ -6,8 +6,8 @@ import app.reservationsystem.persistence.repository.ClubRepository;
 import app.reservationsystem.persistence.repository.FieldRepository;
 import app.reservationsystem.presentation.dto.fields.FieldRequestDTO;
 import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
-import app.reservationsystem.services.interfaces.FieldService;
-import app.reservationsystem.services.interfaces.JwtService;
+import app.reservationsystem.services.FieldService;
+import app.reservationsystem.util.ClaimsUtil;
 import app.reservationsystem.util.mapper.FieldMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,17 +18,15 @@ import java.util.List;
 @Service
 public class FieldServiceImpl implements FieldService {
 
-    private final JwtService jwtService;
-
     private final FieldRepository fieldRepository;
     private final ClubRepository clubRepository;
 
     private final FieldMapper fieldMapper;
 
     @Override
-    public FieldResponseDTO addField(Integer idClub, FieldRequestDTO fieldRequest, String token) {
+    public FieldResponseDTO addField(Integer idClub, FieldRequestDTO fieldRequest) {
 
-        Long idUser = jwtService.extractIdUser(token.substring(7));
+        Long idUser = ClaimsUtil.getUserId();
 
         Club club = clubRepository.findById(idClub).orElseThrow(
                 () -> new RuntimeException(String.format("Club with id %s, Not found", idClub))
@@ -73,8 +71,8 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public void deleteField(Integer idField, String token) {
-        Long idUser = jwtService.extractIdUser(token.substring(7));
+    public void deleteField(Integer idField) {
+        Long idUser = ClaimsUtil.getUserId();
 
         Field field = fieldRepository.findById(idField).orElseThrow(
                 () -> new RuntimeException(String.format("Field with id %s, Not found", idField))
@@ -85,6 +83,5 @@ public class FieldServiceImpl implements FieldService {
         }
 
         fieldRepository.delete(field);
-
     }
 }

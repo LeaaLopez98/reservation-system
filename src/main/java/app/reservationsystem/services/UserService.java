@@ -1,4 +1,4 @@
-package app.reservationsystem.services.interfaces;
+package app.reservationsystem.services;
 
 import app.reservationsystem.presentation.dto.auth.*;
 

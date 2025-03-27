@@ -8,8 +8,8 @@ import app.reservationsystem.persistence.repository.OwnerRepository;
 import app.reservationsystem.persistence.repository.PlayerRepository;
 import app.reservationsystem.persistence.repository.UserRepository;
 import app.reservationsystem.presentation.dto.auth.*;
-import app.reservationsystem.services.interfaces.JwtService;
-import app.reservationsystem.services.interfaces.UserService;
+import app.reservationsystem.services.JwtService;
+import app.reservationsystem.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,9 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
 
-            UserAccount user = userRepository.findByUsername(request.getUsername()).get();
+            UserAccount user = userRepository.findByUsername(request.getUsername()).orElseThrow(
+                    () -> new RuntimeException(String.format("Username with id %s, Not found", request.getUsername()))
+            );
 
             String token = jwtService.generateToken(user);
 

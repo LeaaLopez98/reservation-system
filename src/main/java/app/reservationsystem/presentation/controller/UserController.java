@@ -1,7 +1,7 @@
 package app.reservationsystem.presentation.controller;
 
 import app.reservationsystem.presentation.dto.auth.*;
-import app.reservationsystem.services.interfaces.UserService;
+import app.reservationsystem.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

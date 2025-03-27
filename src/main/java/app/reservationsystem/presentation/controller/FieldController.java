@@ -2,7 +2,7 @@ package app.reservationsystem.presentation.controller;
 
 import app.reservationsystem.presentation.dto.fields.FieldRequestDTO;
 import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
-import app.reservationsystem.services.interfaces.FieldService;
+import app.reservationsystem.services.FieldService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +18,9 @@ public class FieldController {
     @PostMapping("/clubs/{id-club}/fields")
     public ResponseEntity<FieldResponseDTO> addField(
             @PathVariable (name = "id-club") Integer idClub,
-            @RequestBody FieldRequestDTO fieldRequest,
-            @RequestHeader(name = "Authorization") String token
+            @RequestBody FieldRequestDTO fieldRequest
     ) {
-        return ResponseEntity.ok(fieldService.addField(idClub, fieldRequest, token));
+        return ResponseEntity.ok(fieldService.addField(idClub, fieldRequest));
     }
 
     @GetMapping("/fields/{id-field}")
@@ -55,10 +54,9 @@ public class FieldController {
 
     @DeleteMapping("/fields/{id-field}")
     public ResponseEntity<Void> deleteField(
-            @PathVariable (name = "id-field") Integer idField,
-            @RequestHeader(name = "Authorization") String token
+            @PathVariable (name = "id-field") Integer idField
     ) {
-        fieldService.deleteField(idField, token);
+        fieldService.deleteField(idField);
         return ResponseEntity.noContent().build();
     }
 

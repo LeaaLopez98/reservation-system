@@ -7,8 +7,8 @@ import app.reservationsystem.persistence.repository.OwnerRepository;
 import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
 import app.reservationsystem.presentation.dto.clubs.ClubUpdateDTO;
-import app.reservationsystem.services.interfaces.ClubService;
-import app.reservationsystem.services.interfaces.JwtService;
+import app.reservationsystem.services.ClubService;
+import app.reservationsystem.util.ClaimsUtil;
 import app.reservationsystem.util.mapper.ClubMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,11 @@ public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final OwnerRepository ownerRepository;
 
-    private final JwtService jwtService;
-
     private final ClubMapper clubMapper;
 
     @Override
-    public ClubResponseDTO addClub(ClubRequestDTO clubRequest, String token) {
-        Long idOwner = jwtService.extractIdUser(token.substring(7));
+    public ClubResponseDTO addClub(ClubRequestDTO clubRequest) {
+        Long idOwner = ClaimsUtil.getUserId();
 
         Owner owner = ownerRepository.findById(idOwner).orElseThrow(
                 () -> new RuntimeException(String.format("Owner with id %s, Not found", idOwner))
@@ -61,9 +59,9 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDTO> getMyClubs(String token) {
+    public List<ClubResponseDTO> getMyClubs() {
 
-        Long idOwner = jwtService.extractIdUser(token.substring(7));
+        Long idOwner = ClaimsUtil.getUserId();
 
         return clubRepository.findAllByOwnerIdUser(idOwner)
                 .stream()
@@ -72,15 +70,15 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public ClubResponseDTO updateClub(Integer idClub, ClubUpdateDTO clubUpdateDTO, String token) {
+    public ClubResponseDTO updateClub(Integer idClub, ClubUpdateDTO clubUpdateDTO) {
         //TODO
         return null;
     }
 
     @Override
-    public void deleteClub(Integer idClub, String token) {
+    public void deleteClub(Integer idClub) {
 
-        Long idOwner = jwtService.extractIdUser(token.substring(7));
+        Long idOwner = ClaimsUtil.getUserId();
 
         Club club = clubRepository.findById(idClub).orElseThrow(
                 () -> new RuntimeException(String.format("Club with id %s, Not found", idClub))
