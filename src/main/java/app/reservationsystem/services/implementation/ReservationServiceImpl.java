@@ -3,13 +3,14 @@ package app.reservationsystem.services.implementation;
 import app.reservationsystem.persistence.entity.Field;
 import app.reservationsystem.persistence.entity.Player;
 import app.reservationsystem.persistence.entity.Reservation;
+import app.reservationsystem.persistence.entity.Role;
 import app.reservationsystem.persistence.repository.FieldRepository;
 import app.reservationsystem.persistence.repository.PlayerRepository;
 import app.reservationsystem.persistence.repository.ReservationRepository;
 import app.reservationsystem.presentation.dto.reservations.ReservationRequestDTO;
 import app.reservationsystem.presentation.dto.reservations.ReservationResponseDTO;
-import app.reservationsystem.services.interfaces.JwtService;
-import app.reservationsystem.services.interfaces.ReservationService;
+import app.reservationsystem.services.ReservationService;
+import app.reservationsystem.util.ClaimsUtil;
 import app.reservationsystem.util.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationMapper reservationMapper;
 
-    private final JwtService jwtService;
-
     @Override
-    public ReservationResponseDTO addReservation(ReservationRequestDTO reservationRequestDTO, String token) {
+    public ReservationResponseDTO addReservation(ReservationRequestDTO reservationRequestDTO) {
 
         boolean exists = reservationRepository.existsByFieldIdFieldAndDateBeginBeforeAndDateEndAfter(
                 reservationRequestDTO.getIdField(),
@@ -37,20 +36,20 @@ public class ReservationServiceImpl implements ReservationService {
                 reservationRequestDTO.getDateBegin()
         );
 
+        Long idUser = ClaimsUtil.getUserId();
+
         if (exists) {
             throw new RuntimeException("Exists a reservation in that field in this period");
         }
-
-        Long idUser = jwtService.extractIdUser(token.substring(7));
-
-        Field field = fieldRepository.findById(reservationRequestDTO.getIdField()).orElseThrow(
-                () -> new RuntimeException(String.format("Field with id %s, Not found", reservationRequestDTO.getIdField()))
-        );
 
         Player player = playerRepository.findById(idUser).orElseThrow(
                 () -> new RuntimeException(String.format("Player with id %s, Not found", idUser))
         );
 
+
+        Field field = fieldRepository.findById(reservationRequestDTO.getIdField()).orElseThrow(
+                () -> new RuntimeException(String.format("Field with id %s, Not found", reservationRequestDTO.getIdField()))
+        );
         Reservation reservation = reservationMapper.dtoToEntity(reservationRequestDTO);
 
         reservation.setField(field);
@@ -61,24 +60,43 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationResponseDTO getReservationById(Long idReservation) {
-        return reservationMapper.entityToDto(reservationRepository.findById(idReservation).orElseThrow(
+
+        Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
                 () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
-        ));
+        );
+
+        if (ClaimsUtil.getRole() == Role.PLAYER && !reservation.getPlayer().getIdUser().equals(ClaimsUtil.getUserId())) {
+            throw new RuntimeException("You can't access this reservation");
+        }
+        else if (ClaimsUtil.getRole() == Role.OWNER && !reservation.getField().getClub().getOwner().getIdUser().equals(ClaimsUtil.getUserId())) {
+            throw new RuntimeException("You can't access this reservation");
+        }
+
+        return reservationMapper.entityToDto(reservation);
     }
 
     @Override
-    public List<ReservationResponseDTO> getAllReservations(String token) {
+    public List<ReservationResponseDTO> getReservationsByRole() {
 
-        // TODO -> ADD FILTER FOR idClub, idPlayer and idField
-        return reservationRepository.findAll()
+        List<Reservation> reservations;
+
+        switch (ClaimsUtil.getRole()) {
+            case PLAYER -> reservations = reservationRepository.findAllByPlayerIdUser(ClaimsUtil.getUserId());
+            case OWNER -> reservations = reservationRepository.findAllByFieldClubOwnerIdUser(ClaimsUtil.getUserId());
+            case ADMIN -> reservations = reservationRepository.findAll();
+            default -> throw new RuntimeException("Invalid role");
+        }
+
+        return reservations
                 .stream()
                 .map(reservationMapper::entityToDto)
                 .toList();
     }
 
     @Override
-    public void deleteReservation(Long idReservation, String token) {
-        Long idUser = jwtService.extractIdUser(token.substring(7));
+    public void deleteReservation(Long idReservation) {
+
+        Long idUser = ClaimsUtil.getUserId();
 
         Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
                 () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
