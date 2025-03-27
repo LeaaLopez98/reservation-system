@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @Entity
-@PrimaryKeyJoinColumn(name = "idAdmin")
+@PrimaryKeyJoinColumn(name = "idOwner")
 public class Owner extends UserAccount{
 
     @OneToMany(mappedBy = "owner")
