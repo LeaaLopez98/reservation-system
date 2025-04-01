@@ -1,4 +1,4 @@
-package app.reservationsystem.persistence.entity;
+package app.reservationsystem.clubs.entity;
 
 import app.reservationsystem.auth.entity.Owner;
 import jakarta.persistence.*;

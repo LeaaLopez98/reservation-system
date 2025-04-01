@@ -1,4 +1,4 @@
-package app.reservationsystem.presentation.dto.fields;
+package app.reservationsystem.clubs.dto;
 
 public class FieldUpdateDTO {
 }

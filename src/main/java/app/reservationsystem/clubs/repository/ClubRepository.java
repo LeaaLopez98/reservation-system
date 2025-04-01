@@ -1,6 +1,6 @@
-package app.reservationsystem.persistence.repository;
+package app.reservationsystem.clubs.repository;
 
-import app.reservationsystem.persistence.entity.Club;
+import app.reservationsystem.clubs.entity.Club;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

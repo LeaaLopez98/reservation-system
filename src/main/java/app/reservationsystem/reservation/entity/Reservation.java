@@ -1,4 +1,4 @@
-package app.reservationsystem.persistence.entity;
+package app.reservationsystem.reservation.entity;
 
 import app.reservationsystem.auth.entity.Player;
 import app.reservationsystem.clubs.entity.Field;

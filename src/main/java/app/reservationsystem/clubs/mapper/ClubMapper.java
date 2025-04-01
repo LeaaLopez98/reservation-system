@@ -1,8 +1,8 @@
-package app.reservationsystem.util.mapper;
+package app.reservationsystem.clubs.mapper;
 
-import app.reservationsystem.persistence.entity.Club;
-import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
-import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
+import app.reservationsystem.clubs.entity.Club;
+import app.reservationsystem.clubs.dto.ClubRequestDTO;
+import app.reservationsystem.clubs.dto.ClubResponseDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = FieldMapper.class)

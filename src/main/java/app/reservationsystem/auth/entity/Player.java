@@ -1,5 +1,6 @@
-package app.reservationsystem.persistence.entity;
+package app.reservationsystem.auth.entity;
 
+import app.reservationsystem.reservation.entity.Reservation;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;

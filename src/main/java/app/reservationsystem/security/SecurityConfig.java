@@ -1,4 +1,4 @@
-package app.reservationsystem.config;
+package app.reservationsystem.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

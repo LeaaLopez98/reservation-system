@@ -1,4 +1,4 @@
-package app.reservationsystem.util;
+package app.reservationsystem.common.util;
 
 import app.reservationsystem.auth.entity.Role;
 import io.jsonwebtoken.Claims;

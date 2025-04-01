@@ -1,4 +1,4 @@
-package app.reservationsystem.persistence.entity;
+package app.reservationsystem.clubs.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

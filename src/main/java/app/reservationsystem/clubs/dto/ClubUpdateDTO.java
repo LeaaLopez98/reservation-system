@@ -1,4 +1,4 @@
-package app.reservationsystem.presentation.dto.clubs;
+package app.reservationsystem.clubs.dto;
 
 public class ClubUpdateDTO {
 }

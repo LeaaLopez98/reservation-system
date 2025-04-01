@@ -1,9 +1,8 @@
-package app.reservationsystem.presentation.controller;
+package app.reservationsystem.reservation.controller;
 
-import app.reservationsystem.presentation.dto.reservations.OccupiedReservationDTO;
-import app.reservationsystem.presentation.dto.reservations.ReservationRequestDTO;
-import app.reservationsystem.presentation.dto.reservations.ReservationResponseDTO;
-import app.reservationsystem.services.ReservationService;
+import app.reservationsystem.reservation.dto.ReservationRequestDTO;
+import app.reservationsystem.reservation.dto.ReservationResponseDTO;
+import app.reservationsystem.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,13 +38,6 @@ public class ReservationController {
         if (reservations.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(reservations);
-    }
-
-    @GetMapping("/clubs/{id-club}/reservations/occupied-per-week")
-    public ResponseEntity<List<OccupiedReservationDTO>> getReservationsOccupiedPerWeekByClub(
-            @PathVariable(name = "id-club") Integer idClub
-    ) {
-        return ResponseEntity.ok(reservationService.getReservationsOccupiedPerWeekByClub(idClub));
     }
 
     @PatchMapping("/reservations/{id-reservation}/cancel")

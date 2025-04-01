@@ -1,8 +1,8 @@
-package app.reservationsystem.services;
+package app.reservationsystem.clubs.service;
 
-import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
-import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
-import app.reservationsystem.presentation.dto.clubs.ClubUpdateDTO;
+import app.reservationsystem.clubs.dto.ClubRequestDTO;
+import app.reservationsystem.clubs.dto.ClubResponseDTO;
+import app.reservationsystem.clubs.dto.ClubUpdateDTO;
 
 import java.util.List;
 

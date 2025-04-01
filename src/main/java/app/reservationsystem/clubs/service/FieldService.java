@@ -1,7 +1,7 @@
-package app.reservationsystem.services;
+package app.reservationsystem.clubs.service;
 
-import app.reservationsystem.presentation.dto.fields.FieldRequestDTO;
-import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
+import app.reservationsystem.clubs.dto.FieldRequestDTO;
+import app.reservationsystem.clubs.dto.FieldResponseDTO;
 
 import java.util.List;
 

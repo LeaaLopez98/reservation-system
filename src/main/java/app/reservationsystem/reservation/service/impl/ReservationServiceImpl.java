@@ -1,25 +1,23 @@
-package app.reservationsystem.services.implementation;
+package app.reservationsystem.reservation.service.impl;
 
 import app.reservationsystem.auth.entity.Player;
 import app.reservationsystem.auth.entity.Role;
 import app.reservationsystem.clubs.entity.Field;
-import app.reservationsystem.persistence.entity.*;
-import app.reservationsystem.persistence.projection.ReservationBetweenDatesProjection;
 import app.reservationsystem.clubs.repository.FieldRepository;
 import app.reservationsystem.auth.repository.PlayerRepository;
-import app.reservationsystem.persistence.repository.ReservationRepository;
-import app.reservationsystem.presentation.dto.reservations.OccupiedReservationDTO;
-import app.reservationsystem.presentation.dto.reservations.ReservationRequestDTO;
-import app.reservationsystem.presentation.dto.reservations.ReservationResponseDTO;
-import app.reservationsystem.services.ReservationService;
-import app.reservationsystem.util.ClaimsUtil;
-import app.reservationsystem.util.mapper.ReservationMapper;
+import app.reservationsystem.reservation.repository.ReservationRepository;
+import app.reservationsystem.reservation.dto.ReservationRequestDTO;
+import app.reservationsystem.reservation.dto.ReservationResponseDTO;
+import app.reservationsystem.reservation.entity.Reservation;
+import app.reservationsystem.reservation.entity.Status;
+import app.reservationsystem.reservation.service.ReservationService;
+import app.reservationsystem.common.util.ClaimsUtil;
+import app.reservationsystem.reservation.mapper.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -96,28 +94,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .stream()
                 .map(reservationMapper::entityToDto)
                 .toList();
-    }
-
-    @Override
-    public List<OccupiedReservationDTO> getReservationsOccupiedPerWeekByClub(Integer idClub) {
-
-        List<ReservationBetweenDatesProjection> reservations = reservationRepository.findAllByStatusNotLikeAndField_Club_IdClubAndDateBeginAfterAndDateEndBefore(
-            Status.CANCELED,
-            idClub,
-            LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7)
-        );
-
-        Map<Integer, List<OccupiedReservationDTO.OccupiedDates>> map = reservations.stream()
-            .collect(
-                Collectors.groupingBy(
-                    ReservationBetweenDatesProjection::fieldIdField,
-                        Collectors.mapping(
-                            res -> new OccupiedReservationDTO.OccupiedDates(res.dateBegin(), res.dateEnd()),
-                                Collectors.toList()))
-            );
-
-        return null;
     }
 
     @Override

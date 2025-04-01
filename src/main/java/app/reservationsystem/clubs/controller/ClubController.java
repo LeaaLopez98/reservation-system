@@ -1,9 +1,9 @@
-package app.reservationsystem.presentation.controller;
+package app.reservationsystem.clubs.controller;
 
-import app.reservationsystem.presentation.dto.clubs.ClubRequestDTO;
-import app.reservationsystem.presentation.dto.clubs.ClubResponseDTO;
-import app.reservationsystem.presentation.dto.clubs.ClubUpdateDTO;
-import app.reservationsystem.services.ClubService;
+import app.reservationsystem.clubs.dto.ClubRequestDTO;
+import app.reservationsystem.clubs.dto.ClubResponseDTO;
+import app.reservationsystem.clubs.dto.ClubUpdateDTO;
+import app.reservationsystem.clubs.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

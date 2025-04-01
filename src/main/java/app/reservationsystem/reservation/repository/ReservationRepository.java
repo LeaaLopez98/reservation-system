@@ -1,8 +1,7 @@
-package app.reservationsystem.persistence.repository;
+package app.reservationsystem.reservation.repository;
 
-import app.reservationsystem.persistence.entity.Reservation;
-import app.reservationsystem.persistence.entity.Status;
-import app.reservationsystem.persistence.projection.ReservationBetweenDatesProjection;
+import app.reservationsystem.reservation.entity.Reservation;
+import app.reservationsystem.reservation.entity.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -19,14 +18,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             LocalDateTime dateEnd,
             LocalDateTime dateBegin
     );
-
-    List<ReservationBetweenDatesProjection> findAllByStatusNotLikeAndField_Club_IdClubAndDateBeginAfterAndDateEndBefore(
-            Status status,
-            Integer idClub,
-            LocalDateTime dateBegin,
-            LocalDateTime dateEnd
-    );
-
-
 
 }

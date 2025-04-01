@@ -1,4 +1,4 @@
-package app.reservationsystem.presentation.dto.auth;
+package app.reservationsystem.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

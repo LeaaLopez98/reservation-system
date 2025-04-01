@@ -1,14 +1,14 @@
-package app.reservationsystem.services.implementation;
+package app.reservationsystem.clubs.service.implementation;
 
-import app.reservationsystem.persistence.entity.Club;
-import app.reservationsystem.persistence.entity.Field;
-import app.reservationsystem.persistence.repository.ClubRepository;
-import app.reservationsystem.persistence.repository.FieldRepository;
-import app.reservationsystem.presentation.dto.fields.FieldRequestDTO;
-import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
-import app.reservationsystem.services.FieldService;
-import app.reservationsystem.util.ClaimsUtil;
-import app.reservationsystem.util.mapper.FieldMapper;
+import app.reservationsystem.clubs.entity.Club;
+import app.reservationsystem.clubs.entity.Field;
+import app.reservationsystem.clubs.repository.ClubRepository;
+import app.reservationsystem.clubs.repository.FieldRepository;
+import app.reservationsystem.clubs.dto.FieldRequestDTO;
+import app.reservationsystem.clubs.dto.FieldResponseDTO;
+import app.reservationsystem.clubs.service.FieldService;
+import app.reservationsystem.common.util.ClaimsUtil;
+import app.reservationsystem.clubs.mapper.FieldMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

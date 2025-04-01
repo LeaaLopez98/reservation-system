@@ -1,7 +1,5 @@
-package app.reservationsystem.presentation.dto.clubs;
+package app.reservationsystem.clubs.dto;
 
-import app.reservationsystem.persistence.entity.Field;
-import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

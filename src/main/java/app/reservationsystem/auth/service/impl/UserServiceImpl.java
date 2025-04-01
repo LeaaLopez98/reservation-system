@@ -1,15 +1,15 @@
-package app.reservationsystem.services.implementation;
+package app.reservationsystem.auth.service.impl;
 
+import app.reservationsystem.auth.dto.*;
 import app.reservationsystem.auth.entity.Owner;
 import app.reservationsystem.auth.entity.Player;
-import app.reservationsystem.persistence.entity.Role;
+import app.reservationsystem.auth.entity.Role;
 import app.reservationsystem.auth.entity.UserAccount;
-import app.reservationsystem.persistence.repository.OwnerRepository;
-import app.reservationsystem.persistence.repository.PlayerRepository;
-import app.reservationsystem.persistence.repository.UserRepository;
-import app.reservationsystem.presentation.dto.auth.*;
-import app.reservationsystem.services.JwtService;
-import app.reservationsystem.services.UserService;
+import app.reservationsystem.auth.repository.OwnerRepository;
+import app.reservationsystem.auth.repository.PlayerRepository;
+import app.reservationsystem.auth.repository.UserRepository;
+import app.reservationsystem.auth.service.JwtService;
+import app.reservationsystem.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

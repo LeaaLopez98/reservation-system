@@ -1,8 +1,8 @@
-package app.reservationsystem.util.mapper;
+package app.reservationsystem.reservation.mapper;
 
-import app.reservationsystem.persistence.entity.Reservation;
-import app.reservationsystem.presentation.dto.reservations.ReservationRequestDTO;
-import app.reservationsystem.presentation.dto.reservations.ReservationResponseDTO;
+import app.reservationsystem.reservation.entity.Reservation;
+import app.reservationsystem.reservation.dto.ReservationRequestDTO;
+import app.reservationsystem.reservation.dto.ReservationResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

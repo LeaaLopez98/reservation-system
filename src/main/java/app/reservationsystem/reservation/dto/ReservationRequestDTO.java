@@ -1,4 +1,4 @@
-package app.reservationsystem.presentation.dto.reservations;
+package app.reservationsystem.reservation.dto;
 
 
 import lombok.Getter;

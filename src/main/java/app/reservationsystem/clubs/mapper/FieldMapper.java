@@ -1,8 +1,8 @@
-package app.reservationsystem.util.mapper;
+package app.reservationsystem.clubs.mapper;
 
-import app.reservationsystem.persistence.entity.Field;
-import app.reservationsystem.presentation.dto.fields.FieldRequestDTO;
-import app.reservationsystem.presentation.dto.fields.FieldResponseDTO;
+import app.reservationsystem.clubs.entity.Field;
+import app.reservationsystem.clubs.dto.FieldRequestDTO;
+import app.reservationsystem.clubs.dto.FieldResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

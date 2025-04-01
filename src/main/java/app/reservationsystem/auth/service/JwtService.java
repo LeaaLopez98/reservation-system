@@ -1,4 +1,4 @@
-package app.reservationsystem.services;
+package app.reservationsystem.auth.service;
 
 import app.reservationsystem.auth.entity.UserAccount;
 import io.jsonwebtoken.Claims;
