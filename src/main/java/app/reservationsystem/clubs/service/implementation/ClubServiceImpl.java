@@ -13,6 +13,7 @@ import app.reservationsystem.shared.exception.UnauthorizedAccessException;
 import app.reservationsystem.shared.util.ClaimsUtil;
 import app.reservationsystem.clubs.mapper.ClubMapper;
 import app.reservationsystem.shared.util.constants.ExceptionMessages;
+import app.reservationsystem.users.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class ClubServiceImpl implements ClubService {
 
     private final ClubRepository clubRepository;
-    private final OwnerRepository ownerRepository;
+    private final OwnerService ownerService;
 
     private final ClubMapper clubMapper;
 
@@ -32,7 +33,7 @@ public class ClubServiceImpl implements ClubService {
     public ClubResponseDTO addClub(ClubRequestDTO clubRequest) {
         Long idOwner = ClaimsUtil.getUserId();
 
-        Owner owner = ownerRepository.findById(idOwner).orElseThrow();
+        Owner owner = ownerService.getOwnerEntityById(idOwner);
 
         Club club = clubMapper.DtoToEntity(clubRequest);
         club.setOwner(owner);
