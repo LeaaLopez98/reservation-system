@@ -5,14 +5,19 @@ import app.reservationsystem.auth.entity.Owner;
 import app.reservationsystem.auth.entity.Player;
 import app.reservationsystem.auth.entity.Role;
 import app.reservationsystem.auth.entity.UserAccount;
+import app.reservationsystem.auth.exception.EmailAlreadyExistsException;
+import app.reservationsystem.auth.exception.UsernameAlreadyExistsException;
 import app.reservationsystem.auth.repository.OwnerRepository;
 import app.reservationsystem.auth.repository.PlayerRepository;
 import app.reservationsystem.auth.repository.UserRepository;
 import app.reservationsystem.auth.service.JwtService;
 import app.reservationsystem.auth.service.UserService;
+import app.reservationsystem.common.util.constants.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,20 +42,26 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
 
-            UserAccount user = userRepository.findByUsername(request.getUsername()).orElseThrow(
-                    () -> new RuntimeException(String.format("Username with id %s, Not found", request.getUsername()))
-            );
+            UserAccount user = userRepository.findByUsername(request.getUsername()).get();
 
             String token = jwtService.generateToken(user);
 
             return new LoginResponse(token);
-        } catch (Exception e) {
-            throw new RuntimeException("Username or password incorrect");
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException(ExceptionMessages.BAD_CREDENTIALS);
         }
     }
 
     @Override
     public RegisterResponse registerPlayer(PlayerRegisterRequest registerRequest) {
+
+        if (playerRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
+        }
+
+        if (playerRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
+        }
 
         Player player = Player.builder()
                 .username(registerRequest.getUsername())
@@ -67,6 +78,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegisterResponse registerOwner(RegisterRequest registerRequest) {
+
+        if (ownerRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
+        }
+
+        if (ownerRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
+        }
 
         Owner owner = Owner.builder()
                 .username(registerRequest.getUsername())

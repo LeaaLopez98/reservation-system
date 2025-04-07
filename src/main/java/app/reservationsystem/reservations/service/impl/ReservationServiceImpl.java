@@ -1,10 +1,10 @@
 package app.reservationsystem.reservation.service.impl;
 
-import app.reservationsystem.auth.entity.Player;
-import app.reservationsystem.auth.entity.Role;
+import app.reservationsystem.users.entity.Player;
+import app.reservationsystem.users.entity.Role;
 import app.reservationsystem.clubs.entity.Field;
-import app.reservationsystem.clubs.repository.FieldRepository;
-import app.reservationsystem.auth.repository.PlayerRepository;
+import app.reservationsystem.users.repository.PlayerRepository;
+import app.reservationsystem.clubs.service.FieldService;
 import app.reservationsystem.reservation.repository.ReservationRepository;
 import app.reservationsystem.reservation.dto.ReservationRequestDTO;
 import app.reservationsystem.reservation.dto.ReservationResponseDTO;
@@ -25,7 +25,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final PlayerRepository playerRepository;
-    private final FieldRepository fieldRepository;
+    private final FieldService fieldService;
+
 
     private final ReservationMapper reservationMapper;
 
@@ -49,10 +50,8 @@ public class ReservationServiceImpl implements ReservationService {
                 () -> new RuntimeException(String.format("Player with id %s, Not found", idUser))
         );
 
+        Field field = fieldService.getFieldEntityById(reservationRequestDTO.getIdField());
 
-        Field field = fieldRepository.findById(reservationRequestDTO.getIdField()).orElseThrow(
-                () -> new RuntimeException(String.format("Field with id %s, Not found", reservationRequestDTO.getIdField()))
-        );
         Reservation reservation = reservationMapper.dtoToEntity(reservationRequestDTO);
 
         reservation.setField(field);

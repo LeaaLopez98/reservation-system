@@ -1,6 +1,6 @@
 package app.reservationsystem.common.util;
 
-import app.reservationsystem.auth.entity.Role;
+import app.reservationsystem.users.entity.Role;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

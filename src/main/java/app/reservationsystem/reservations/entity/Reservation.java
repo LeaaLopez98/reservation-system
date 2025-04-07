@@ -1,6 +1,6 @@
 package app.reservationsystem.reservation.entity;
 
-import app.reservationsystem.auth.entity.Player;
+import app.reservationsystem.users.entity.Player;
 import app.reservationsystem.clubs.entity.Field;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

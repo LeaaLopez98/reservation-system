@@ -1,6 +1,7 @@
 package app.reservationsystem.auth.config;
 
 import app.reservationsystem.auth.repository.UserRepository;
+import app.reservationsystem.common.util.constants.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,7 +28,7 @@ public class AuthConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username).orElseThrow(
-                () -> new RuntimeException(String.format("User with id %s, Not found", username))
+                () -> new UsernameNotFoundException(String.format(ExceptionMessages.USERNAME_NOT_FOUND, username))
         );
     }
 
