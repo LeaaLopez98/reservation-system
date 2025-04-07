@@ -1,7 +1,7 @@
-package app.reservationsystem.reservation.repository;
+package app.reservationsystem.reservations.repository;
 
-import app.reservationsystem.reservation.entity.Reservation;
-import app.reservationsystem.reservation.entity.Status;
+import app.reservationsystem.reservations.entity.Reservation;
+import app.reservationsystem.reservations.entity.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

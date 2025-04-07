@@ -1,6 +1,6 @@
-package app.reservationsystem.auth.repository;
+package app.reservationsystem.users.repository;
 
-import app.reservationsystem.auth.entity.UserAccount;
+import app.reservationsystem.users.entity.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

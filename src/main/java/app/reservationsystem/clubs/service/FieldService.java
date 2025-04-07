@@ -2,6 +2,7 @@ package app.reservationsystem.clubs.service;
 
 import app.reservationsystem.clubs.dto.FieldRequestDTO;
 import app.reservationsystem.clubs.dto.FieldResponseDTO;
+import app.reservationsystem.clubs.entity.Field;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface FieldService {
     FieldResponseDTO updateField(Integer idField, FieldRequestDTO fieldRequest);
     void deleteField(Integer idField);
 
-
+    Field getFieldEntityById(Integer idField);
 
 }

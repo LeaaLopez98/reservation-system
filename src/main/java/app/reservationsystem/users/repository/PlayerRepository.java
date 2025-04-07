@@ -1,6 +1,6 @@
-package app.reservationsystem.auth.repository;
+package app.reservationsystem.users.repository;
 
-import app.reservationsystem.auth.entity.Player;
+import app.reservationsystem.users.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlayerRepository extends JpaRepository<Player, Long> {

@@ -1,32 +1,34 @@
-package app.reservationsystem.reservation.service.impl;
+package app.reservationsystem.reservations.service.impl;
 
+import app.reservationsystem.clubs.entity.Field;
+import app.reservationsystem.reservations.exception.ReservationNotAvailableException;
+import app.reservationsystem.shared.exception.UnauthorizedAccessException;
+import app.reservationsystem.shared.util.constants.ExceptionMessages;
+import app.reservationsystem.reservations.exception.ReservationNotFoundException;
 import app.reservationsystem.users.entity.Player;
 import app.reservationsystem.users.entity.Role;
-import app.reservationsystem.clubs.entity.Field;
-import app.reservationsystem.users.repository.PlayerRepository;
 import app.reservationsystem.clubs.service.FieldService;
-import app.reservationsystem.reservation.repository.ReservationRepository;
-import app.reservationsystem.reservation.dto.ReservationRequestDTO;
-import app.reservationsystem.reservation.dto.ReservationResponseDTO;
-import app.reservationsystem.reservation.entity.Reservation;
-import app.reservationsystem.reservation.entity.Status;
-import app.reservationsystem.reservation.service.ReservationService;
-import app.reservationsystem.common.util.ClaimsUtil;
-import app.reservationsystem.reservation.mapper.ReservationMapper;
+import app.reservationsystem.reservations.repository.ReservationRepository;
+import app.reservationsystem.reservations.dto.ReservationRequestDTO;
+import app.reservationsystem.reservations.dto.ReservationResponseDTO;
+import app.reservationsystem.reservations.entity.Reservation;
+import app.reservationsystem.reservations.entity.Status;
+import app.reservationsystem.reservations.service.ReservationService;
+import app.reservationsystem.shared.util.ClaimsUtil;
+import app.reservationsystem.reservations.mapper.ReservationMapper;
+import app.reservationsystem.users.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final PlayerRepository playerRepository;
+    private final PlayerService playerService;
     private final FieldService fieldService;
-
 
     private final ReservationMapper reservationMapper;
 
@@ -43,12 +45,10 @@ public class ReservationServiceImpl implements ReservationService {
         Long idUser = ClaimsUtil.getUserId();
 
         if (exists) {
-            throw new RuntimeException("Exists a reservation in that field in this period");
+            throw new ReservationNotAvailableException(ExceptionMessages.RESERVATION_NOT_AVAILABLE);
         }
 
-        Player player = playerRepository.findById(idUser).orElseThrow(
-                () -> new RuntimeException(String.format("Player with id %s, Not found", idUser))
-        );
+        Player player = playerService.getPlayerEntityById(idUser);
 
         Field field = fieldService.getFieldEntityById(reservationRequestDTO.getIdField());
 
@@ -63,15 +63,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationResponseDTO getReservationById(Long idReservation) {
 
-        Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
-                () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
-        );
+        Reservation reservation = getReservationEntityById(idReservation);
 
-        if (ClaimsUtil.getRole() == Role.PLAYER && !reservation.getPlayer().getIdUser().equals(ClaimsUtil.getUserId())) {
-            throw new RuntimeException("You can't access this reservation");
-        }
-        else if (ClaimsUtil.getRole() == Role.OWNER && !reservation.getField().getClub().getOwner().getIdUser().equals(ClaimsUtil.getUserId())) {
-            throw new RuntimeException("You can't access this reservation");
+        if (isUserAuthorizedForReservation(reservation)) {
+            throw new UnauthorizedAccessException(ExceptionMessages.RESERVATION_FORBIDDEN);
         }
 
         return reservationMapper.entityToDto(reservation);
@@ -99,12 +94,10 @@ public class ReservationServiceImpl implements ReservationService {
     public void cancelReservation(Long idReservation) {
         Long idUser = ClaimsUtil.getUserId();
 
-        Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
-                () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
-        );
+        Reservation reservation = getReservationEntityById(idReservation);
 
         if (!reservation.getPlayer().getIdUser().equals(idUser)) {
-            throw new RuntimeException("You are not the owner of this reservation");
+            throw new UnauthorizedAccessException(ExceptionMessages.RESERVATION_NOT_OWNER);
         }
 
         reservation.setStatus(Status.CANCELED);
@@ -115,12 +108,28 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void confirmReservation(Long idReservation) {
 
-        Reservation reservation = reservationRepository.findById(idReservation).orElseThrow(
-                () -> new RuntimeException(String.format("Reservation with id %s, Not found", idReservation))
-        );
+        Reservation reservation = getReservationEntityById(idReservation);
 
         reservation.setStatus(Status.CONFIRMED);
 
         reservationRepository.save(reservation);
     }
+
+    @Override
+    public Reservation getReservationEntityById(Long idReservation) {
+        return reservationRepository.findById(idReservation).orElseThrow(
+                () -> new ReservationNotFoundException(String.format(ExceptionMessages.RESERVATION_NOT_FOUND, idReservation))
+        );
+    }
+
+    private boolean isUserAuthorizedForReservation(Reservation reservation) {
+
+        Long idUser = ClaimsUtil.getUserId();
+        Role role = ClaimsUtil.getRole();
+
+        return
+                (role == Role.PLAYER && !reservation.getPlayer().getIdUser().equals(idUser)) ||
+                (role == Role.OWNER && !reservation.getField().getClub().getOwner().getIdUser().equals(idUser));
+    }
+
 }

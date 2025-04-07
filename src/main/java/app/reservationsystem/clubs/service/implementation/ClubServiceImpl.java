@@ -1,15 +1,18 @@
 package app.reservationsystem.clubs.service.implementation;
 
 import app.reservationsystem.clubs.entity.Club;
-import app.reservationsystem.auth.entity.Owner;
+import app.reservationsystem.users.entity.Owner;
+import app.reservationsystem.clubs.exception.ClubNotFoundException;
 import app.reservationsystem.clubs.repository.ClubRepository;
-import app.reservationsystem.auth.repository.OwnerRepository;
+import app.reservationsystem.users.repository.OwnerRepository;
 import app.reservationsystem.clubs.dto.ClubRequestDTO;
 import app.reservationsystem.clubs.dto.ClubResponseDTO;
 import app.reservationsystem.clubs.dto.ClubUpdateDTO;
 import app.reservationsystem.clubs.service.ClubService;
-import app.reservationsystem.common.util.ClaimsUtil;
+import app.reservationsystem.shared.exception.UnauthorizedAccessException;
+import app.reservationsystem.shared.util.ClaimsUtil;
 import app.reservationsystem.clubs.mapper.ClubMapper;
+import app.reservationsystem.shared.util.constants.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +32,7 @@ public class ClubServiceImpl implements ClubService {
     public ClubResponseDTO addClub(ClubRequestDTO clubRequest) {
         Long idOwner = ClaimsUtil.getUserId();
 
-        Owner owner = ownerRepository.findById(idOwner).orElseThrow(
-                () -> new RuntimeException(String.format("Owner with id %s, Not found", idOwner))
-        );
+        Owner owner = ownerRepository.findById(idOwner).orElseThrow();
 
         Club club = clubMapper.DtoToEntity(clubRequest);
         club.setOwner(owner);
@@ -44,8 +45,7 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public ClubResponseDTO getClubById(Integer idClub) {
 
-        Club club = clubRepository.findById(idClub).orElseThrow(
-                () -> new RuntimeException(String.format("Club with id %s, Not found", idClub)));
+        Club club = getClubEntityById(idClub);
 
         return clubMapper.entityToDto(club);
     }
@@ -81,13 +81,20 @@ public class ClubServiceImpl implements ClubService {
         Long idOwner = ClaimsUtil.getUserId();
 
         Club club = clubRepository.findById(idClub).orElseThrow(
-                () -> new RuntimeException(String.format("Club with id %s, Not found", idClub))
+                () -> new ClubNotFoundException(String.format(ExceptionMessages.CLUB_NOT_FOUND, idClub))
         );
 
         if (!club.getOwner().getIdUser().equals(idOwner)) {
-            throw new RuntimeException("You are not the owner of this club");
+            throw new UnauthorizedAccessException(ExceptionMessages.CLUB_NOT_OWNER);
         }
 
         clubRepository.delete(club);
+    }
+
+    @Override
+    public Club getClubEntityById(Integer idClub) {
+        return clubRepository.findById(idClub).orElseThrow(
+                () -> new ClubNotFoundException(String.format(ExceptionMessages.CLUB_NOT_FOUND, idClub))
+        );
     }
 }

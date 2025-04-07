@@ -1,7 +1,7 @@
-package app.reservationsystem.auth.controller;
+package app.reservationsystem.users.controller;
 
-import app.reservationsystem.auth.dto.*;
-import app.reservationsystem.auth.service.UserService;
+import app.reservationsystem.users.dto.*;
+import app.reservationsystem.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +36,5 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.registerOwner(registerRequest));
     }
-
-
 
 }

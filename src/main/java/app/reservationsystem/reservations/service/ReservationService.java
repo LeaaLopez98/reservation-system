@@ -1,7 +1,8 @@
-package app.reservationsystem.reservation.service;
+package app.reservationsystem.reservations.service;
 
-import app.reservationsystem.reservation.dto.ReservationRequestDTO;
-import app.reservationsystem.reservation.dto.ReservationResponseDTO;
+import app.reservationsystem.reservations.dto.ReservationRequestDTO;
+import app.reservationsystem.reservations.dto.ReservationResponseDTO;
+import app.reservationsystem.reservations.entity.Reservation;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface ReservationService {
 
     void cancelReservation(Long idReservation);
     void confirmReservation(Long idReservation);
+
+    Reservation getReservationEntityById(Long idReservation);
 }

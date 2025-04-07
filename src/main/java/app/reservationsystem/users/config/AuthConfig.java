@@ -1,7 +1,7 @@
-package app.reservationsystem.auth.config;
+package app.reservationsystem.users.config;
 
-import app.reservationsystem.auth.repository.UserRepository;
-import app.reservationsystem.common.util.constants.ExceptionMessages;
+import app.reservationsystem.users.repository.UserRepository;
+import app.reservationsystem.shared.util.constants.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

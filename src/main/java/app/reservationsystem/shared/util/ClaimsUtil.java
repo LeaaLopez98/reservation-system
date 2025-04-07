@@ -1,4 +1,4 @@
-package app.reservationsystem.common.util;
+package app.reservationsystem.shared.util;
 
 import app.reservationsystem.users.entity.Role;
 import io.jsonwebtoken.Claims;

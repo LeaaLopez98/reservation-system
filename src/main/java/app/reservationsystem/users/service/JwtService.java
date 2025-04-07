@@ -1,6 +1,6 @@
-package app.reservationsystem.auth.service;
+package app.reservationsystem.users.service;
 
-import app.reservationsystem.auth.entity.UserAccount;
+import app.reservationsystem.users.entity.UserAccount;
 import io.jsonwebtoken.Claims;
 
 public interface JwtService {

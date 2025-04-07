@@ -1,4 +1,4 @@
-package app.reservationsystem.auth.entity;
+package app.reservationsystem.users.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

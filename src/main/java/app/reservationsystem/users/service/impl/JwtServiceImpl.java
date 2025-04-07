@@ -1,7 +1,7 @@
-package app.reservationsystem.auth.service.impl;
+package app.reservationsystem.users.service.impl;
 
-import app.reservationsystem.auth.entity.UserAccount;
-import app.reservationsystem.auth.service.JwtService;
+import app.reservationsystem.users.entity.UserAccount;
+import app.reservationsystem.users.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

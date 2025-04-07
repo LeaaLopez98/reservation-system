@@ -1,6 +1,6 @@
-package app.reservationsystem.reservation.dto;
+package app.reservationsystem.reservations.dto;
 
-import app.reservationsystem.reservation.entity.Status;
+import app.reservationsystem.reservations.entity.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

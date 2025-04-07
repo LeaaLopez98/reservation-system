@@ -1,4 +1,4 @@
-package app.reservationsystem.auth.entity;
+package app.reservationsystem.users.entity;
 
 public enum Role {
     OWNER, PLAYER, ADMIN;

@@ -1,8 +1,8 @@
-package app.reservationsystem.reservation.controller;
+package app.reservationsystem.reservations.controller;
 
-import app.reservationsystem.reservation.dto.ReservationRequestDTO;
-import app.reservationsystem.reservation.dto.ReservationResponseDTO;
-import app.reservationsystem.reservation.service.ReservationService;
+import app.reservationsystem.reservations.dto.ReservationRequestDTO;
+import app.reservationsystem.reservations.dto.ReservationResponseDTO;
+import app.reservationsystem.reservations.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

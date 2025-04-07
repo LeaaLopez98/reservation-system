@@ -1,6 +1,6 @@
 package app.reservationsystem.security;
 
-import app.reservationsystem.auth.service.JwtService;
+import app.reservationsystem.users.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
