@@ -3,6 +3,7 @@ package app.reservationsystem.reservations.controller;
 import app.reservationsystem.reservations.dto.ReservationRequestDTO;
 import app.reservationsystem.reservations.dto.ReservationResponseDTO;
 import app.reservationsystem.reservations.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ReservationController {
 
     @PostMapping("/reservations")
     public ResponseEntity<ReservationResponseDTO> createReservation(
-            @RequestBody ReservationRequestDTO reservationRequestDTO
+            @Valid @RequestBody ReservationRequestDTO reservationRequestDTO
     ) {
         return ResponseEntity.ok(reservationService.addReservation(reservationRequestDTO));
     }

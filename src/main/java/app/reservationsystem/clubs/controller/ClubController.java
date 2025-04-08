@@ -4,6 +4,7 @@ import app.reservationsystem.clubs.dto.ClubRequestDTO;
 import app.reservationsystem.clubs.dto.ClubResponseDTO;
 import app.reservationsystem.clubs.dto.ClubUpdateDTO;
 import app.reservationsystem.clubs.service.ClubService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ClubController {
 
     @PostMapping
     public ResponseEntity<ClubResponseDTO> addClub(
-            @RequestBody ClubRequestDTO clubRequest
+            @Valid @RequestBody ClubRequestDTO clubRequest
     ) {
         return ResponseEntity.ok(clubService.addClub(clubRequest));
     }
@@ -54,7 +55,7 @@ public class ClubController {
     @PutMapping("/{id-club}")
     public ResponseEntity<ClubResponseDTO> updateClub(
             @PathVariable(name = "id-club") Integer idClub,
-            @RequestBody ClubUpdateDTO clubUpdateDTO
+            @Valid @RequestBody ClubUpdateDTO clubUpdateDTO
     ) {
         return ResponseEntity.ok(clubService.updateClub(idClub, clubUpdateDTO));
     }
