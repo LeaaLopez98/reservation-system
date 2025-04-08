@@ -2,7 +2,6 @@ package app.reservationsystem.users.exception;
 
 
 import app.reservationsystem.shared.exception.GenericException;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
