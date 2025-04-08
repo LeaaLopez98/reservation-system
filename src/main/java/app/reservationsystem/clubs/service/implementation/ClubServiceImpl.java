@@ -4,7 +4,6 @@ import app.reservationsystem.clubs.entity.Club;
 import app.reservationsystem.users.entity.Owner;
 import app.reservationsystem.clubs.exception.ClubNotFoundException;
 import app.reservationsystem.clubs.repository.ClubRepository;
-import app.reservationsystem.users.repository.OwnerRepository;
 import app.reservationsystem.clubs.dto.ClubRequestDTO;
 import app.reservationsystem.clubs.dto.ClubResponseDTO;
 import app.reservationsystem.clubs.dto.ClubUpdateDTO;
@@ -70,24 +69,30 @@ public class ClubServiceImpl implements ClubService {
                 .collect(Collectors.toList());
     }
 
+    private void checkClubOwnership(Club club) {
+        Long idOwner = ClaimsUtil.getUserId();
+
+        if (!club.getOwner().getIdUser().equals(idOwner)) {
+            throw new UnauthorizedAccessException(ExceptionMessages.CLUB_NOT_OWNER);
+        }
+    }
+
     @Override
     public ClubResponseDTO updateClub(Integer idClub, ClubUpdateDTO clubUpdateDTO) {
-        //TODO
-        return null;
+
+        Club club = getClubEntityById(idClub);
+        checkClubOwnership(club);
+        clubMapper.updateClubFromDto(clubUpdateDTO, club);
+        return clubMapper.entityToDto(clubRepository.save(club));
     }
 
     @Override
     public void deleteClub(Integer idClub) {
 
-        Long idOwner = ClaimsUtil.getUserId();
 
-        Club club = clubRepository.findById(idClub).orElseThrow(
-                () -> new ClubNotFoundException(String.format(ExceptionMessages.CLUB_NOT_FOUND, idClub))
-        );
+        Club club = getClubEntityById(idClub);
 
-        if (!club.getOwner().getIdUser().equals(idOwner)) {
-            throw new UnauthorizedAccessException(ExceptionMessages.CLUB_NOT_OWNER);
-        }
+        checkClubOwnership(club);
 
         clubRepository.delete(club);
     }

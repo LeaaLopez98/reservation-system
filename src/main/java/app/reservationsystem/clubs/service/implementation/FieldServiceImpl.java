@@ -1,5 +1,6 @@
 package app.reservationsystem.clubs.service.implementation;
 
+import app.reservationsystem.clubs.dto.FieldUpdateDTO;
 import app.reservationsystem.clubs.entity.Club;
 import app.reservationsystem.clubs.entity.Field;
 import app.reservationsystem.clubs.exception.ClubNotFoundException;
@@ -74,23 +75,29 @@ public class FieldServiceImpl implements FieldService {
                 .toList();
     }
 
-    @Override
-    public FieldResponseDTO updateField(Integer idField, FieldRequestDTO fieldRequest) {
-        return null;
-    }
-
-    @Override
-    public void deleteField(Integer idField) {
+    private void checkFieldOwnership(Field field) {
         Long idUser = ClaimsUtil.getUserId();
-
-        Field field = fieldRepository.findById(idField).orElseThrow(
-                () -> new FieldNotFoundException(String.format(ExceptionMessages.FIELD_NOT_FOUND, idField))
-        );
 
         if (!field.getClub().getOwner().getIdUser().equals(idUser)) {
             throw new UnauthorizedAccessException(ExceptionMessages.CLUB_NOT_OWNER);
         }
+    }
 
+    @Override
+    public FieldResponseDTO updateField(Integer idField, FieldUpdateDTO fieldRequest)
+    {
+        Field field = getFieldEntityById(idField);
+        checkFieldOwnership(field);
+        fieldMapper.updateFieldFromDto(fieldRequest, field);
+
+        return fieldMapper.entityToDto(fieldRepository.save(field));
+
+    }
+
+    @Override
+    public void deleteField(Integer idField) {
+        Field field = getFieldEntityById(idField);
+        checkFieldOwnership(field);
         fieldRepository.delete(field);
     }
 
