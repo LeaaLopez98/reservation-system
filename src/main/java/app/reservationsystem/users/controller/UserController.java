@@ -2,6 +2,7 @@ package app.reservationsystem.users.controller;
 
 import app.reservationsystem.users.dto.*;
 import app.reservationsystem.users.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,21 +19,21 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest request
+            @Valid @RequestBody LoginRequest request
     ) {
         return ResponseEntity.ok(userService.login(request));
     }
 
     @PostMapping("/register/player")
     public ResponseEntity<RegisterResponse> registerPlayer(
-            @RequestBody PlayerRegisterRequest registerRequest
+            @Valid @RequestBody PlayerRegisterRequest registerRequest
     ) {
         return ResponseEntity.ok(userService.registerPlayer(registerRequest));
     }
 
     @PostMapping("/register/owner")
     public ResponseEntity<RegisterResponse> registerOwner(
-            @RequestBody RegisterRequest registerRequest
+            @Valid @RequestBody RegisterRequest registerRequest
     ) {
         return ResponseEntity.ok(userService.registerOwner(registerRequest));
     }
