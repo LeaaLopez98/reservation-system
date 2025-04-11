@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Service
@@ -30,34 +32,41 @@ public class ReservationServiceImpl implements ReservationService {
     private final PlayerService playerService;
     private final FieldService fieldService;
 
+    private final Map<Integer, Object> fieldLocks = new ConcurrentHashMap<>();
+
     private final ReservationMapper reservationMapper;
 
     @Override
     public ReservationResponseDTO addReservation(ReservationRequestDTO reservationRequestDTO) {
 
-        boolean exists = reservationRepository.existsByStatusNotLikeAndFieldIdFieldAndDateBeginBeforeAndDateEndAfter(
-                Status.CANCELED,
-                reservationRequestDTO.getIdField(),
-                reservationRequestDTO.getDateEnd(),
-                reservationRequestDTO.getDateBegin()
-        );
+        Integer idField = reservationRequestDTO.getIdField();
 
-        Long idUser = ClaimsUtil.getUserId();
+        Object lock = fieldLocks.computeIfAbsent(idField, k -> new Object());
 
-        if (exists) {
-            throw new ReservationNotAvailableException(ExceptionMessages.RESERVATION_NOT_AVAILABLE);
+        synchronized (lock) {
+            boolean exists = reservationRepository.existsByStatusNotLikeAndFieldIdFieldAndDateBeginBeforeAndDateEndAfter(
+                    Status.CANCELED,
+                    reservationRequestDTO.getIdField(),
+                    reservationRequestDTO.getDateEnd(),
+                    reservationRequestDTO.getDateBegin()
+            );
+
+            if (exists) {
+                throw new ReservationNotAvailableException(ExceptionMessages.RESERVATION_NOT_AVAILABLE);
+            }
+
+            Long idUser = ClaimsUtil.getUserId();
+            Player player = playerService.getPlayerEntityById(idUser);
+
+            Field field = fieldService.getFieldEntityById(reservationRequestDTO.getIdField());
+
+            Reservation reservation = reservationMapper.dtoToEntity(reservationRequestDTO);
+
+            reservation.setField(field);
+            reservation.setPlayer(player);
+
+            return reservationMapper.entityToDto(reservationRepository.save(reservation));
         }
-
-        Player player = playerService.getPlayerEntityById(idUser);
-
-        Field field = fieldService.getFieldEntityById(reservationRequestDTO.getIdField());
-
-        Reservation reservation = reservationMapper.dtoToEntity(reservationRequestDTO);
-
-        reservation.setField(field);
-        reservation.setPlayer(player);
-
-        return reservationMapper.entityToDto(reservationRepository.save(reservation));
     }
 
     @Override
