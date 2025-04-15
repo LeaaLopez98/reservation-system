@@ -2,6 +2,7 @@ package app.reservationsystem.reservations.repository;
 
 import app.reservationsystem.reservations.entity.Reservation;
 import app.reservationsystem.reservations.entity.Status;
+import app.reservationsystem.reservations.projection.OccupiedDatesProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             Integer idField,
             LocalDateTime dateEnd,
             LocalDateTime dateBegin
+    );
+
+    List<OccupiedDatesProjection> findAllByStatusNotLikeAndFieldClubIdClubAndDateBeginAfterAndDateEndBefore(
+            Status status,
+            Integer idClub,
+            LocalDateTime dateBegin,
+            LocalDateTime dateEnd
     );
 
 }
