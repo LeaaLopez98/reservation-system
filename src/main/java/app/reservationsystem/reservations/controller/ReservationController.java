@@ -1,5 +1,6 @@
 package app.reservationsystem.reservations.controller;
 
+import app.reservationsystem.reservations.dto.ReservationOccupied;
 import app.reservationsystem.reservations.dto.ReservationRequestDTO;
 import app.reservationsystem.reservations.dto.ReservationResponseDTO;
 import app.reservationsystem.reservations.service.ReservationService;
@@ -30,7 +31,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationById(idReservation));
     }
 
-    // TODO -> ADD FILTER BY QUERY PARAMS FOR idClub, idPlayer and idField
     @GetMapping("/reservations")
     public ResponseEntity<List<ReservationResponseDTO>> getAllReservations(
     ) {
@@ -39,6 +39,13 @@ public class ReservationController {
         if (reservations.isEmpty()) return ResponseEntity.noContent().build();
 
         return ResponseEntity.ok(reservations);
+    }
+
+    @GetMapping("clubs/{id-club}/reservations/weekly")
+    public ResponseEntity<List<ReservationOccupied>> getOccupiedReservationsByWeek(
+            @PathVariable(name = "id-club") Integer idClub
+    ) {
+        return ResponseEntity.ok(reservationService.getOccupiedReservationsByWeek(idClub));
     }
 
     @PatchMapping("/reservations/{id-reservation}/cancel")

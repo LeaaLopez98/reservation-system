@@ -1,7 +1,10 @@
 package app.reservationsystem.reservations.service.impl;
 
 import app.reservationsystem.clubs.entity.Field;
+import app.reservationsystem.reservations.dto.OccupiedDate;
+import app.reservationsystem.reservations.dto.ReservationOccupied;
 import app.reservationsystem.reservations.exception.ReservationNotAvailableException;
+import app.reservationsystem.reservations.projection.OccupiedDatesProjection;
 import app.reservationsystem.shared.exception.UnauthorizedAccessException;
 import app.reservationsystem.shared.util.constants.ExceptionMessages;
 import app.reservationsystem.reservations.exception.ReservationNotFoundException;
@@ -20,9 +23,11 @@ import app.reservationsystem.users.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -97,6 +102,31 @@ public class ReservationServiceImpl implements ReservationService {
                 .stream()
                 .map(reservationMapper::entityToDto)
                 .toList();
+    }
+
+    @Override
+    public List<ReservationOccupied> getOccupiedReservationsByWeek(Integer idClub) {
+        List<OccupiedDatesProjection> reservations = reservationRepository.findAllByStatusNotLikeAndFieldClubIdClubAndDateBeginAfterAndDateEndBefore(
+                Status.CANCELED,
+                idClub,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7)
+        );
+
+        Map<Integer, List<OccupiedDate>> grouped = reservations.stream()
+                .collect(
+                        Collectors.groupingBy(
+                            OccupiedDatesProjection::fieldIdField,
+                            Collectors.mapping(
+                                record -> new OccupiedDate(record.dateBegin(), record.dateEnd()),
+                                Collectors.toList()
+                            )
+                ));
+
+        return grouped.entrySet().stream()
+                .map(entry -> new ReservationOccupied(entry.getKey(), entry.getValue()))
+                .toList();
+
     }
 
     @Override
