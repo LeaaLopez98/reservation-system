@@ -103,4 +103,11 @@ public class ClubServiceImpl implements ClubService {
                 () -> new ClubNotFoundException(String.format(ExceptionMessages.CLUB_NOT_FOUND, idClub))
         );
     }
+
+    @Override
+    public void checkIfClubExists(Integer idClub) {
+        if (!clubRepository.existsById(idClub)) {
+            throw new ClubNotFoundException(String.format(ExceptionMessages.CLUB_NOT_FOUND, idClub));
+        }
+    }
 }

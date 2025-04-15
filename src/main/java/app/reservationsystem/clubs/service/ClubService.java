@@ -20,5 +20,6 @@ public interface ClubService {
 
     Club getClubEntityById(Integer idClub);
 
+    void checkIfClubExists(Integer idClub);
 
 }
