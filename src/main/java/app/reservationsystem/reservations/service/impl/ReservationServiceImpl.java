@@ -1,6 +1,7 @@
 package app.reservationsystem.reservations.service.impl;
 
 import app.reservationsystem.clubs.entity.Field;
+import app.reservationsystem.clubs.service.ClubService;
 import app.reservationsystem.reservations.dto.OccupiedDate;
 import app.reservationsystem.reservations.dto.ReservationOccupied;
 import app.reservationsystem.reservations.exception.ReservationNotAvailableException;
@@ -36,6 +37,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final PlayerService playerService;
     private final FieldService fieldService;
+
+    private final ClubService clubService;
 
     private final Map<Integer, Object> fieldLocks = new ConcurrentHashMap<>();
 
@@ -106,6 +109,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<ReservationOccupied> getOccupiedReservationsByWeek(Integer idClub) {
+
+        clubService.checkIfClubExists(idClub);
+
         List<OccupiedDatesProjection> reservations = reservationRepository.findAllByStatusNotLikeAndFieldClubIdClubAndDateBeginAfterAndDateEndBefore(
                 Status.CANCELED,
                 idClub,
@@ -113,20 +119,17 @@ public class ReservationServiceImpl implements ReservationService {
                 LocalDateTime.now().plusDays(7)
         );
 
-        Map<Integer, List<OccupiedDate>> grouped = reservations.stream()
+        return reservations.stream()
                 .collect(
                         Collectors.groupingBy(
                             OccupiedDatesProjection::fieldIdField,
                             Collectors.mapping(
                                 record -> new OccupiedDate(record.dateBegin(), record.dateEnd()),
-                                Collectors.toList()
-                            )
-                ));
-
-        return grouped.entrySet().stream()
+                                Collectors.toList())))
+                .entrySet()
+                .stream()
                 .map(entry -> new ReservationOccupied(entry.getKey(), entry.getValue()))
                 .toList();
-
     }
 
     @Override
