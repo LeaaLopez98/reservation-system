@@ -2,20 +2,18 @@ spring:
   application:
     name: reservation-system
   datasource:
-    url: jdbc:postgresql://localhost:5432/reservation-system
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: update
 
 jwt:
-  secret: 7a8e0bf61ca43549d86b055e111b8199cd142a24ef41b094abdf64e3037d6b41
-  expiration-time: 3600000
-
+  secret: ${JWT_SECRET}
+  expiration-time: ${JWT_EXPIRATION_TIME}
 
 server:
   port: 8080
