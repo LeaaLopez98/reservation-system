@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e5799 0%, #207cca 51%, #2989d8 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .header:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: repeating-linear-gradient(
+                    45deg,
+                    #ffffff33,
+                    #ffffff33 10px,
+                    #ffffff66 10px,
+                    #ffffff66 20px
+            );
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .confirmation-box {
+            background-color: #e8f5e9;
+            border-left: 5px solid #43a047;
+            padding: 20px;
+            margin: 25px 20px;
+            border-radius: 4px;
+        }
+
+        .confirmation-box h2 {
+            color: #2e7d32;
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .details-section {
+            padding: 0 20px;
+        }
+
+        .details-section h3 {
+            color: #1e5799;
+            font-size: 18px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .details-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .details-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .details-table tr:last-child td,
+        .details-table tr:last-child th {
+            border-bottom: none;
+        }
+
+        .details-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .confirm-button-container {
+            text-align: center;
+            padding: 10px 20px 30px;
+        }
+
+        .confirm-button {
+            display: inline-block;
+            padding: 14px 30px;
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .confirm-button:hover {
+            background: linear-gradient(to bottom, #43A047, #2E7D32);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.4);
+        }
+
+        .footer {
+            background-color: #1e5799;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            border-top: 5px solid #2989d8;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .field-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .pitch-decoration {
+            height: 40px;
+            background: linear-gradient(to right, #4CAF50 50%, #388E3C 50%);
+            background-size: 40px 40px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        @media only screen and (max-width: 480px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                padding: 20px 15px;
+            }
+            .details-table th,
+            .details-table td {
+                padding: 10px;
+            }
+            .confirm-button {
+                width: 100%;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="logo" src="cid:logo" alt="Club Logo">
+        <h1 th:text="${clubName}"></h1>
+    </div>
+
+    <div class="pitch-decoration"></div>
+
+    <div class="confirmation-box">
+        <h2>¡Reserva Confirmada!</h2>
+        <p>Hola <span th:text="${playerName}" style="font-weight: 600;"></span>, tu reserva ha sido confirmada exitosamente.</p>
+    </div>
+
+    <div class="details-section">
+        <h3>Detalles de la Reserva</h3>
+        <table class="details-table">
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1e5799"/>
+                        <path d="M2 17L12 22L22 17" stroke="#1e5799" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="#1e5799" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Club:
+                </th>
+                <td th:text="${clubName}" style="font-weight: 600;"></td>
+            </tr>
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="#1e5799" stroke-width="2"/>
+                        <path d="M12 8V16" stroke="#1e5799" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 12H16" stroke="#1e5799" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Campo Nº:
+                </th>
+                <td th:text="${fieldNumber}" style="font-weight: 600; color: #1e5799;"></td>
+            </tr>
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4" stroke="#1e5799" stroke-width="2"/>
+                        <path d="M5 20C5 16.6863 8.13401 14 12 14C15.866 14 19 16.6863 19 20" stroke="#1e5799" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Jugador:
+                </th>
+                <td th:text="${playerName}"></td>
+            </tr>
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="#1e5799" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 22V12H15V22" stroke="#1e5799" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Dirección:
+                </th>
+                <td th:text="${clubAddress}"></td>
+            </tr>
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="#1e5799" stroke-width="2"/>
+                        <path d="M16 2V6" stroke="#1e5799" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M8 2V6" stroke="#1e5799" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 10H21" stroke="#1e5799" stroke-width="2"/>
+                    </svg>
+                    Fecha:
+                </th>
+                <td th:text="${#temporals.format(dateBegin, 'EEEE, d MMMM, yyyy')}" style="font-weight: 600;"></td>            </tr>
+            <tr>
+                <th>
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="#1e5799" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="#1e5799" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Horario:
+                </th>
+                <td>
+                    <span th:text="${#temporals.format(dateBegin, 'HH:mm')}" style="font-weight: 600; color: #1e5799;"></span> -
+                    <span th:text="${#temporals.format(dateEnd, 'HH:mm')}" style="font-weight: 600; color: #1e5799;"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="confirm-button-container">
+        <a th:href="${confirmationUrl}" class="confirm-button">CONFIRMAR RESERVA</a>
+    </div>
+
+    <div class="footer">
+        <p>Este es un correo automático. Por favor no responda a este mensaje.</p>
+        <p><span th:text="${clubName}"></span> - <span th:text="${clubAddress}"></span></p>
+        <p>© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> Todos los derechos reservados</p>
+    </div>
+</div>
+</body>
+</html>
