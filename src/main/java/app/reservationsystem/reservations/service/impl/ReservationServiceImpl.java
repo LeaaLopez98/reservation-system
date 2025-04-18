@@ -2,6 +2,8 @@ package app.reservationsystem.reservations.service.impl;
 
 import app.reservationsystem.clubs.entity.Field;
 import app.reservationsystem.clubs.service.ClubService;
+import app.reservationsystem.emails.builder.ConfirmReservationBuilder;
+import app.reservationsystem.emails.service.EmailService;
 import app.reservationsystem.reservations.dto.OccupiedDate;
 import app.reservationsystem.reservations.dto.ReservationOccupied;
 import app.reservationsystem.reservations.exception.ReservationNotAvailableException;
@@ -39,6 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final FieldService fieldService;
 
     private final ClubService clubService;
+    private final EmailService emailService;
 
     private final Map<Integer, Object> fieldLocks = new ConcurrentHashMap<>();
 
@@ -73,7 +76,11 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setField(field);
             reservation.setPlayer(player);
 
-            return reservationMapper.entityToDto(reservationRepository.save(reservation));
+            Reservation savedReservation = reservationRepository.save(reservation);
+
+            emailService.sendEmail(new ConfirmReservationBuilder(savedReservation));
+
+            return reservationMapper.entityToDto(savedReservation);
         }
     }
 
