@@ -1,10 +1,31 @@
 services:
-  db:
-    container_name: db-reservation-system
-    image: postgres:16.1
+  reservation-system:
+    build: ../
+    container_name: backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: reservation-system
+      - DB_URL=${POSTGRES_URL}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME}
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:16.1
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    volumes:
+      - .data:/var/lib/postgresql/data
