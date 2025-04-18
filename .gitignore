@@ -34,3 +34,4 @@ build/
 scripts/
 
 deployment/.env
+deployment/.data
