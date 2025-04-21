@@ -1,5 +1,7 @@
 package app.reservationsystem.users.service.impl;
 
+import app.reservationsystem.emails.builder.ConfirmRegistrationBuilder;
+import app.reservationsystem.emails.service.EmailService;
 import app.reservationsystem.users.dto.*;
 import app.reservationsystem.users.entity.Owner;
 import app.reservationsystem.users.entity.Player;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     private final JwtService jwtService;
+    private final EmailService emailService;
 
     private final AuthenticationManager authenticationManager;
 
@@ -55,13 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RegisterResponse registerPlayer(PlayerRegisterRequest registerRequest) {
 
-        if (playerRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
-        }
-
-        if (playerRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
-        }
+        validateUserCredentials(registerRequest.getUsername(), registerRequest.getEmail());
 
         Player player = Player.builder()
                 .username(registerRequest.getUsername())
@@ -73,19 +70,15 @@ public class UserServiceImpl implements UserService {
 
         Player savedPlayer = playerRepository.save(player);
 
+        emailService.sendEmail(new ConfirmRegistrationBuilder(player));
+
         return new RegisterResponse(savedPlayer.getUsername());
     }
 
     @Override
     public RegisterResponse registerOwner(RegisterRequest registerRequest) {
 
-        if (ownerRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
-        }
-
-        if (ownerRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
-        }
+        validateUserCredentials(registerRequest.getUsername(), registerRequest.getEmail());
 
         Owner owner = Owner.builder()
                 .username(registerRequest.getUsername())
@@ -97,5 +90,15 @@ public class UserServiceImpl implements UserService {
         Owner savedOwner = ownerRepository.save(owner);
 
         return new RegisterResponse(savedOwner.getUsername());
+    }
+
+    private void validateUserCredentials(String username, String email) {
+        if (!userRepository.existsByUsername(username)){
+            throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
+        }
+
+        if (!userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
+        }
     }
 }
