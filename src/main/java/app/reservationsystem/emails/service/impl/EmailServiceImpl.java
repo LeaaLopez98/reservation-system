@@ -5,6 +5,7 @@ import app.reservationsystem.emails.dto.EmailContent;
 import app.reservationsystem.emails.service.EmailService;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -21,6 +22,9 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
 
+    @Value("${spring.mail.from}")
+    private String fromEmail;
+
     @Async
     @Override
     public void sendEmail(EmailBuilder emailBuilder) {
@@ -36,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(emailContent.getTo());
             helper.setSubject(emailContent.getSubject());
             helper.setText(processedHtmlTemplate, true);
-            helper.setFrom("no-reply@example.com");
+            helper.setFrom(fromEmail);
 
             emailSender.send(message);
         } catch (Exception e) {
