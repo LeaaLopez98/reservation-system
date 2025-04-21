@@ -7,6 +7,20 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+  mail:
+    from: no-reply@example.com
+    host: localhost
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+
   jpa:
     hibernate:
       ddl-auto: update
