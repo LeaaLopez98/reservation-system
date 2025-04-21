@@ -1,6 +1,5 @@
 package app.reservationsystem.reservations.service.impl;
 
-import app.reservationsystem.clubs.entity.Field;
 import app.reservationsystem.clubs.service.ClubService;
 import app.reservationsystem.emails.builder.ConfirmReservationBuilder;
 import app.reservationsystem.emails.service.EmailService;
@@ -11,9 +10,7 @@ import app.reservationsystem.reservations.projection.OccupiedDatesProjection;
 import app.reservationsystem.shared.exception.UnauthorizedAccessException;
 import app.reservationsystem.shared.util.constants.ExceptionMessages;
 import app.reservationsystem.reservations.exception.ReservationNotFoundException;
-import app.reservationsystem.users.entity.Player;
 import app.reservationsystem.users.entity.Role;
-import app.reservationsystem.clubs.service.FieldService;
 import app.reservationsystem.reservations.repository.ReservationRepository;
 import app.reservationsystem.reservations.dto.ReservationRequestDTO;
 import app.reservationsystem.reservations.dto.ReservationResponseDTO;
@@ -22,7 +19,6 @@ import app.reservationsystem.reservations.entity.Status;
 import app.reservationsystem.reservations.service.ReservationService;
 import app.reservationsystem.shared.util.ClaimsUtil;
 import app.reservationsystem.reservations.mapper.ReservationMapper;
-import app.reservationsystem.users.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +33,7 @@ import java.util.stream.Collectors;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final PlayerService playerService;
-    private final FieldService fieldService;
+    private final BuildReservation buildReservation;
 
     private final ClubService clubService;
     private final EmailService emailService;
@@ -66,17 +61,8 @@ public class ReservationServiceImpl implements ReservationService {
                 throw new ReservationNotAvailableException(ExceptionMessages.RESERVATION_NOT_AVAILABLE);
             }
 
-            Long idUser = ClaimsUtil.getUserId();
-            Player player = playerService.getPlayerEntityById(idUser);
-
-            Field field = fieldService.getFieldEntityById(reservationRequestDTO.getIdField());
-
-            Reservation reservation = reservationMapper.dtoToEntity(reservationRequestDTO);
-
-            reservation.setField(field);
-            reservation.setPlayer(player);
-
-            Reservation savedReservation = reservationRepository.save(reservation);
+            Reservation savedReservation = reservationRepository
+                    .save(buildReservation.createReservation(reservationRequestDTO));
 
             emailService.sendEmail(new ConfirmReservationBuilder(savedReservation));
 
