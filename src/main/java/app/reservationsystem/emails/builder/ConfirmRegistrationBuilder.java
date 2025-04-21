@@ -1,7 +1,6 @@
 package app.reservationsystem.emails.builder;
 
 import app.reservationsystem.emails.dto.EmailContent;
-import app.reservationsystem.emails.dto.EmailType;
 import app.reservationsystem.users.entity.UserAccount;
 
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class ConfirmRegistrationBuilder implements EmailBuilder {
                 .builder()
                 .to(user.getEmail())
                 .subject("Confirm your registration")
-                .type(EmailType.REGISTER_USER_CONFIRMATION)
+                .htmlTemplatePath("templates/registrationConfirmation.html")
                 .model(model)
                 .build();
     }

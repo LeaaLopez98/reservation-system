@@ -13,7 +13,6 @@ public class EmailContent {
 
     private String to;
     private String subject;
-    private EmailType type;
     private String htmlTemplatePath;
     private Map<String, Object> model;
 
