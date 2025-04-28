@@ -12,10 +12,7 @@ import app.reservationsystem.users.exception.UsernameAlreadyExistsException;
 import app.reservationsystem.users.repository.OwnerRepository;
 import app.reservationsystem.users.repository.PlayerRepository;
 import app.reservationsystem.users.repository.UserRepository;
-import app.reservationsystem.users.service.AuthService;
-import app.reservationsystem.users.service.JwtService;
-import app.reservationsystem.users.service.RegisterUserService;
-import app.reservationsystem.users.service.UserService;
+import app.reservationsystem.users.service.*;
 import app.reservationsystem.shared.util.constants.ExceptionMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +28,8 @@ public class UserServiceImpl implements UserService {
 
     private final AuthService authService;
     private final RegisterUserService registerService;
+
+    private final RecoveryPasswordService recoveryPasswordService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -48,4 +47,13 @@ public class UserServiceImpl implements UserService {
         return registerService.registerOwner(registerRequest);
     }
 
+    @Override
+    public void forgotPassword(ForgotPasswordRequest request) {
+        recoveryPasswordService.forgotPassword(request);
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest request) {
+        recoveryPasswordService.resetPassword(request);
+    }
 }

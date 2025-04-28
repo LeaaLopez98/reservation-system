@@ -8,4 +8,7 @@ public interface UserService {
     RegisterResponse registerPlayer(PlayerRegisterRequest registerRequest);
     RegisterResponse registerOwner(RegisterRequest registerRequest);
 
+    void forgotPassword(ForgotPasswordRequest request);
+    void resetPassword(ResetPasswordRequest request);
+
 }
