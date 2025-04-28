@@ -17,6 +17,7 @@ public class ConfirmReservationBuilder implements EmailBuilder {
     @Override
     public EmailContent buildEmail() {
 
+        // TODO: This have to redirect to a frontend for fill a form with the new password
         String url = String.format("http://localhost:8080/api/reservations/%s/confirm", reservation.getIdReservation());
 
         Map<String, Object> model = new HashMap<>();
