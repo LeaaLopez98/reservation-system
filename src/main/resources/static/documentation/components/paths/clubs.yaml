@@ -1,0 +1,118 @@
+clubs:
+  post:
+    tags: [Clubs]
+    summary: Add a new club
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/ClubRequestDTO.yaml'
+          example:
+            name: "Club Independiente de Tandil"
+            description: "Club de fútbol tradicional en Tandil."
+            address: "Av. Avellaneda 745, Tandil, Buenos Aires"
+            phoneNumber: "+54 249 442-1234"
+            email: "info@independientetandil.com"
+            openingTime: "08:00"
+            closingTime: "22:00"
+    responses:
+      '200':
+        description: Club created
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/ClubResponseDTO.yaml'
+      '400':
+        description: Bad request
+      '403':
+        description: Unauthorized
+  get:
+    tags: [Clubs]
+    summary: Get all clubs
+    responses:
+      '200':
+        description: List of clubs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/ClubResponseDTO.yaml'
+      '204':
+        description: No clubs found
+  delete:
+    tags: [Clubs]
+    summary: Delete club by ID
+    responses:
+      '204':
+        description: Club deleted
+      '404':
+        description: Club not found
+      '403':
+        description: You are not the owner of this club
+
+clubs_id:
+  get:
+    tags: [Clubs]
+    summary: Get club by ID
+    parameters:
+      - name: id-club
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: Club found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/ClubResponseDTO.yaml'
+      '404':
+        description: Club not found
+  put:
+    tags: [Clubs]
+    summary: Update club
+    parameters:
+      - name: id-club
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/ClubUpdateDTO.yaml'
+    responses:
+      '200':
+        description: Club updated
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/ClubResponseDTO.yaml'
+      '400':
+        description: Bad request
+      '404':
+        description: Club not found
+      '403':
+        description: Unauthorized
+clubs_me:
+  get:
+    tags: [Clubs]
+    summary: Get clubs owned by the current user
+    responses:
+      '200':
+        description: List of clubs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/ClubResponseDTO.yaml'
+      '204':
+        description: No clubs found
+      '403':
+        description: Unauthorized

@@ -1,0 +1,76 @@
+users_login:
+  post:
+    tags: [Users]
+    summary: Login user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/LoginRequest.yaml'
+          example:
+            username: "juan.tandil"
+            password: "12345678"
+    responses:
+      '200':
+        description: Successful login
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/TokenResponse.yaml'
+            example:
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      '400':
+        description: Bad request
+      '401':
+        description: Unauthorized
+users_register_player:
+  post:
+    tags: [Users]
+    summary: Register a new player
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/PlayerRegisterRequest.yaml'
+          example:
+            username: "lea.tandil"
+            password: "futbol2024"
+            email: "lea@tandil.com"
+    responses:
+      '200':
+        description: Player registered
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/RegisterResponse.yaml'
+      '400':
+        description: Bad request
+      '409':
+        description: Email or username already in use
+users_register_owner:
+  post:
+    tags: [Users]
+    summary: Register a new owner
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/RegisterRequest.yaml'
+          example:
+            username: "clubindependiente"
+            password: "canchaRoja"
+            email: "info@independientetandil.com"
+    responses:
+      '200':
+        description: Owner registered
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/RegisterResponse.yaml'
+      '400':
+        description: Bad request
+      '409':
+        description: Email or username already in use

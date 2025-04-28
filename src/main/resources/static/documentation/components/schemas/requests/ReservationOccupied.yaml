@@ -1,0 +1,12 @@
+type: object
+properties:
+  date:
+    type: string
+    format: date
+    example: "2025-04-25"
+  times:
+    type: array
+    items:
+      type: string
+      format: time
+    example: ["18:00", "19:00"]

@@ -1,0 +1,17 @@
+type: object
+properties:
+  username:
+    type: string
+    example: clubindependiente
+  password:
+    type: string
+    format: password
+    example: canchaRoja
+  email:
+    type: string
+    format: email
+    example: info@independientetandil.com
+required:
+  - username
+  - password
+  - email

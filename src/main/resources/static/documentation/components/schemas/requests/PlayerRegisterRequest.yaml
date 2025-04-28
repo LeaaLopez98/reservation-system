@@ -1,0 +1,17 @@
+type: object
+properties:
+  username:
+    type: string
+    example: lucas.tandil
+  password:
+    type: string
+    format: password
+    example: futbol2024
+  email:
+    type: string
+    format: email
+    example: lucas@tandil.com
+required:
+  - username
+  - password
+  - email

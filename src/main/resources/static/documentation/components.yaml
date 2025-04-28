@@ -1,0 +1,19 @@
+components:
+  schemas:
+    # Reference schemas in their own files
+    LoginRequest: { $ref: './components/schemas/requests/LoginRequest.yaml' }
+    PlayerRegisterRequest: { $ref: './components/schemas/requests/PlayerRegisterRequest.yaml' }
+    RegisterRequest: { $ref: './components/schemas/requests/RegisterRequest.yaml' }
+    RegisterResponse: { $ref: './components/schemas/responses/RegisterResponse.yaml' }
+    TokenResponse: { $ref: './components/schemas/responses/TokenResponse.yaml' }
+    ClubRequestDTO: { $ref: './components/schemas/requests/ClubRequestDTO.yaml' }
+    ClubUpdateDTO: { $ref: './components/schemas/requests/ClubUpdateDTO.yaml' }
+    ClubResponseDTO: { $ref: './components/schemas/responses/ClubResponseDTO.yaml' }
+    FieldRequestDTO: { $ref: './components/schemas/requests/FieldRequestDTO.yaml' }
+    FieldUpdateDTO: { $ref: './components/schemas/requests/FieldUpdateDTO.yaml' }
+    FieldResponseDTO: { $ref: './components/schemas/responses/FieldResponseDTO.yaml' }
+    ReservationRequestDTO: { $ref: './components/schemas/requests/ReservationRequestDTO.yaml' }
+    ReservationResponseDTO: { $ref: './components/schemas/responses/ReservationResponseDTO.yaml' }
+    ReservationOccupied: { $ref: './components/schemas/responses/ReservationOccupied.yaml' }
+  securitySchemes:
+    $ref: './components/securitySchemes.yaml#/securitySchemes'

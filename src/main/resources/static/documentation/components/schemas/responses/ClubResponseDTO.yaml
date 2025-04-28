@@ -1,0 +1,32 @@
+type: object
+properties:
+  idClub:
+    type: integer
+    example: 1
+  name:
+    type: string
+    example: Club Independiente de Tandil
+  description:
+    type: string
+    example: Club de fútbol tradicional en Tandil.
+  address:
+    type: string
+    example: Av. Avellaneda 745, Tandil, Buenos Aires
+  phoneNumber:
+    type: string
+    example: "+54 249 442-1234"
+  email:
+    type: string
+    example: info@independientetandil.com
+  openingTime:
+    type: string
+    format: time
+    example: "08:00"
+  closingTime:
+    type: string
+    format: time
+    example: "22:00"
+  fields:
+    type: array
+    items:
+      $ref: './FieldResponseDTO.yaml'

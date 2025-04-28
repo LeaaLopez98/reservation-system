@@ -1,0 +1,29 @@
+type: object
+properties:
+  idReservation:
+    type: integer
+    example: 100
+  clubName:
+    type: string
+    example: Club Independiente de Tandil
+  playerName:
+    type: string
+    example: Lucas Pérez
+  address:
+    type: string
+    example: Av. Avellaneda 745, Tandil, Buenos Aires
+  fieldNumber:
+    type: integer
+    example: 1
+  dateBegin:
+    type: string
+    format: date-time
+    example: "2025-04-25T18:00:00"
+  dateEnd:
+    type: string
+    format: date-time
+    example: "2025-04-25T19:00:00"
+  status:
+    type: string
+    enum: [PENDING, CONFIRMED, CANCELLED]
+    example: CONFIRMED

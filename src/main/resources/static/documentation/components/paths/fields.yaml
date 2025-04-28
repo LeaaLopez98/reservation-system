@@ -1,0 +1,115 @@
+clubs_id_fields:
+  post:
+    tags: [Fields]
+    summary: Add a field to a club
+    parameters:
+      - name: id-club
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/FieldRequestDTO.yaml'
+          example:
+            fieldNumber: 1
+            capacity: 11
+            price: 12000.0
+    responses:
+      '200':
+        description: Field created
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/FieldResponseDTO.yaml'
+      '400':
+        description: Bad request
+      '403':
+        description: Unauthorized
+      '404':
+        description: Club not found
+  get:
+    tags: [Fields]
+    summary: Get all fields for a club
+    parameters:
+      - name: id-club
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: List of fields
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/FieldResponseDTO.yaml'
+      '204':
+        description: No fields found
+fields:
+  get:
+    tags: [Fields]
+    summary: Get all fields
+    responses:
+      '200':
+        description: List of fields
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/FieldResponseDTO.yaml'
+      '204':
+        description: No fields found
+fields_id:
+  get:
+    tags: [Fields]
+    summary: Get field by ID
+    parameters:
+      - name: id-field
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: Field found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/FieldResponseDTO.yaml'
+      '404':
+        description: Field not found
+  put:
+    tags: [Fields]
+    summary: Update field
+    parameters:
+      - name: id-field
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/FieldUpdateDTO.yaml'
+    responses:
+      '200':
+        description: Field updated
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/FieldResponseDTO.yaml'
+      '400':
+        description: Bad request
+      '403':
+        description: Unauthorized
+      '404':
+        description: Field not found

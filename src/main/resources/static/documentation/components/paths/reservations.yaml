@@ -1,0 +1,116 @@
+reservations:
+  post:
+    tags: [Reservations]
+    summary: Create a reservation
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/requests/ReservationRequestDTO.yaml'
+          example:
+            idField: 1
+            dateBegin: "2025-04-25T18:00:00"
+            dateEnd: "2025-04-25T19:00:00"
+    responses:
+      '200':
+        description: Reservation created
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/ReservationResponseDTO.yaml'
+      '400':
+        description: Bad request
+      '403':
+        description: Login required
+      '404':
+        description: Field not found
+
+  get:
+    tags: [Reservations]
+    summary: Get all reservations for the current user
+    responses:
+      '200':
+        description: List of reservations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/ReservationResponseDTO.yaml'
+      '204':
+        description: No reservations found
+      '403':
+        description: Login required
+reservations_id:
+  get:
+    tags: [Reservations]
+    summary: Get reservation by ID
+    parameters:
+      - name: id-reservation
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: Reservation found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/responses/ReservationResponseDTO.yaml'
+      '404':
+        description: Reservation not found
+clubs_id_reservations_weekly:
+  get:
+    tags: [Reservations]
+    summary: Get all occupied reservations for a club for the current week
+    parameters:
+      - name: id-club
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: List of occupied reservations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/responses/ReservationOccupied.yaml'
+      '204':
+        description: No occupied reservations found
+      '404':
+        description: Club not found
+reservations_id_cancel:
+  patch:
+    tags: [Reservations]
+    summary: Cancel a reservation
+    parameters:
+      - name: id-reservation
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '204':
+        description: Reservation cancelled
+      '404':
+        description: Reservation not found
+reservations_id_confirm:
+  patch:
+    tags: [Reservations]
+    summary: Confirm a reservation
+    parameters:
+      - name: id-reservation
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      '204':
+        description: Reservation confirmed
+      '404':
+        description: Reservation not found

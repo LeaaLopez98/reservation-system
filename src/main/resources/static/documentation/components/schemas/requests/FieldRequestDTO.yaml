@@ -1,0 +1,18 @@
+type: object
+properties:
+  fieldNumber:
+    type: integer
+    example: 1
+  capacity:
+    type: integer
+    minimum: 5
+    maximum: 11
+    example: 11
+  price:
+    type: number
+    format: float
+    example: 12000.0
+required:
+  - fieldNumber
+  - capacity
+  - price

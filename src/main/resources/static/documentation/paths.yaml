@@ -1,0 +1,15 @@
+paths:
+  /users/login: { $ref: './components/paths/users.yaml#/users_login' }
+  /users/register/player: { $ref: './components/paths/users.yaml#/users_register_player' }
+  /users/register/owner: { $ref: './components/paths/users.yaml#/users_register_owner' }
+  /clubs: { $ref: './components/paths/clubs.yaml#/clubs' }
+  /clubs/{id-club}: { $ref: './components/paths/clubs.yaml#/clubs_id' }
+  /clubs/me: { $ref: './components/paths/clubs.yaml#/clubs_me' }
+  /clubs/{id-club}/fields: { $ref: './components/paths/fields.yaml#/clubs_id_fields' }
+  /fields: { $ref: './components/paths/fields.yaml#/fields' }
+  /fields/{id-field}: { $ref: './components/paths/fields.yaml#/fields_id' }
+  /reservations: { $ref: './components/paths/reservations.yaml#/reservations' }
+  /reservations/{id-reservation}: { $ref: './components/paths/reservations.yaml#/reservations_id' }
+  /clubs/{id-club}/reservations/weekly: { $ref: './components/paths/reservations.yaml#/clubs_id_reservations_weekly' }
+  /reservations/{id-reservation}/cancel: { $ref: './components/paths/reservations.yaml#/reservations_id_cancel' }
+  /reservations/{id-reservation}/confirm: { $ref: './components/paths/reservations.yaml#/reservations_id_confirm' }

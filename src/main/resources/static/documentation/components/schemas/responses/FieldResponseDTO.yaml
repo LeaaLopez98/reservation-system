@@ -1,0 +1,21 @@
+type: object
+properties:
+  idField:
+    type: integer
+    example: 1
+  idClub:
+    type: integer
+    example: 1
+  fieldNumber:
+    type: integer
+    example: 1
+  capacity:
+    type: integer
+    example: 11
+  price:
+    type: number
+    format: float
+    example: 12000.0
+  address:
+    type: string
+    example: Av. Avellaneda 745, Tandil, Buenos Aires
