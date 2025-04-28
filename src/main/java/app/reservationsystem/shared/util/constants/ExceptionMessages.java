@@ -19,4 +19,6 @@ public class ExceptionMessages {
     public static final String RESERVATION_NOT_OWNER = "You are not the owner of this reservation";
 
     public static final String RESERVATION_NOT_AVAILABLE = "Reservation not available in that period";
+    public static final String EMAIL_NOT_FOUND = "Email not found";
+    public static final String INVALID_OR_EXPIRED_TOKEN = "Invalid or expired token";
 }
