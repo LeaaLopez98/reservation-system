@@ -1,4 +1,24 @@
 services:
+
+  reservation-system:
+    container_name: reservation-system
+    build: ../
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/reservation-system
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: 7a8e0bf61ca43549d86b055e111b8199cd142a24ef41b094abdf64e3037d6b41
+      JWT_EXPIRATION_TIME: 3600000
+    restart: always
+    depends_on:
+      - db
+      - redis
+      - mailhog
+
   db:
     container_name: db-reservation-system
     image: postgres:16.1
@@ -8,3 +28,18 @@ services:
       POSTGRES_DB: reservation-system
     ports:
       - "5432:5432"
+    volumes:
+      - .data:/var/lib/postgresql/data
+
+  redis:
+    container_name: redis-reservation-system
+    image: redis:7.4.2
+    ports:
+      - "6379:6379"
+
+  mailhog:
+    container_name: mailhog-reservation-system
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025"
+      - "8025:8025"
