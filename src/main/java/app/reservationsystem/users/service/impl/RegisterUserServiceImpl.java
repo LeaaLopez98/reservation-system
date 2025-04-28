@@ -9,7 +9,6 @@ import app.reservationsystem.users.dto.RegisterResponse;
 import app.reservationsystem.users.entity.Owner;
 import app.reservationsystem.users.entity.Player;
 import app.reservationsystem.users.entity.Role;
-import app.reservationsystem.users.entity.UserAccount;
 import app.reservationsystem.users.exception.EmailAlreadyExistsException;
 import app.reservationsystem.users.exception.UsernameAlreadyExistsException;
 import app.reservationsystem.users.repository.OwnerRepository;
@@ -67,11 +66,11 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     }
 
     private void validateUserCredentials(String username, String email) {
-        if (!userRepository.existsByUsername(username)){
+        if (userRepository.existsByUsername(username)){
             throw new UsernameAlreadyExistsException(ExceptionMessages.USERNAME_EXISTS);
         }
 
-        if (!userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException(ExceptionMessages.EMAIL_EXISTS);
         }
     }
