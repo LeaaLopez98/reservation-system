@@ -5,10 +5,7 @@ import app.reservationsystem.users.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -38,4 +35,19 @@ public class UserController {
         return ResponseEntity.ok(userService.registerOwner(registerRequest));
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest emailRequest
+    ) {
+        userService.forgotPassword(emailRequest);
+        return ResponseEntity.ok("Email sent");
+    }
+
+    @PatchMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest
+    ) {
+        userService.resetPassword(resetPasswordRequest);
+        return ResponseEntity.ok("Password reset");
+    }
 }
