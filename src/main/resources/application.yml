@@ -1,11 +1,21 @@
 spring:
   application:
     name: reservation-system
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
   mail:
     from: no-reply@example.com
@@ -20,16 +30,20 @@ spring:
           starttls:
             enable: false
 
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-
 jwt:
   secret: ${JWT_SECRET}
   expiration-time: ${JWT_EXPIRATION_TIME}
+
+recovery-password:
+  expiration-time: 15
 
 server:
   port: 8080
   servlet:
     context-path: /api
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    url: /documentation/openapi.yaml
