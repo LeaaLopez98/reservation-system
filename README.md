@@ -1,5 +1,4 @@
 # ⚡ Reservation System
-A modern Spring Boot application for managing sports club reservations, users, fields, and clubs.
 ---
 ## 🚀 Features
 - 🏟️ **Club & Field Management**
@@ -8,52 +7,17 @@ A modern Spring Boot application for managing sports club reservations, users, f
 - 📨 **Email notifications for reservations**
 - 🔒 **Secure endpoints with JWT authentication**
 - 📖 **RESTful API with OpenAPI/Swagger support**
----
-## ⚙️ Technologies Used
-<div align="center">
-  <table>
-    <tr>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://www.oracle.com/java/">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" width="50" alt="Java" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>Java</b></span>
-        </a>
-      </td>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://spring.io/projects/spring-boot">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" width="50" alt="Spring Boot" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>Spring</b></span>
-        </a>
-      </td>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://maven.apache.org/">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/maven/maven-original.svg" width="50" alt="Maven" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>Maven</b></span>
-        </a>
-      </td>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://www.postgresql.org/">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" width="50" alt="PostgreSQL" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>PostgreSQL</b></span>
-        </a>
-      </td>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://redis.io/">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg" width="50" alt="Redis" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>Redis</b></span>
-        </a>
-      </td>
-      <td align="center" style="padding: 10px; width: 100px; height: 100px;">
-        <a href="https://www.docker.com/">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" width="50" alt="Docker" />
-          <br /><span style="font-size: 16px; padding-top: 10px;"><b>Docker</b></span>
-        </a>
-      </td>
-    </tr>
-  </table>
-</div>
 
----
+## 🛠️ Tech Stack
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java" />
+  <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white" alt="Maven" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Redis-D22222?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+</div>
 
 ## 📦 Running Locally
 
@@ -61,6 +25,7 @@ A modern Spring Boot application for managing sports club reservations, users, f
 Make sure you have the following installed:
 - Docker
 - Git
+
 ### 2️⃣ Clone the Repository
 ```bash
 git clone https://github.com/LeaaLopez98/reservation-system.git
@@ -71,5 +36,8 @@ Navigate to the deployment folder and start the application using Docker Compose
 cd reservation-system/deployment
 docker compose up
 ```
+
+The application will be available at `http://localhost:8080`
+
 ## 🌐 API Documentation
    Swagger UI: http://localhost:8080/api/swagger-ui/index.html
